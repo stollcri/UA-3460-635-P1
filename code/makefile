@@ -2,7 +2,8 @@ all:
 	cc -o a.out adjacencyList.c
 
 test:
-	cc -o a.out test.c
+	cc -o dataStructuresTest dataStructuresTest.c
+	cc -o adjacencyListTest adjacencyListTest.c
 
 clean:
-	rm a.out
+	rm adjacencyListTest

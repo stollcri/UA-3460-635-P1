@@ -33,14 +33,14 @@ struct graph *createGraph(int verticesCount) {
  * Add an edge to a graph
  */
 void addEdge(struct graph *thisGraph, int source, int sink) {
-	struct node *newNode = createNode(sink);
+	struct node *thisNode = newNode(sink);
 
-	newNode->next = thisGraph->adjacencyList[source].head;
-	thisGraph->adjacencyList[source].head = newNode;
+	thisNode->next = thisGraph->adjacencyList[source].head;
+	thisGraph->adjacencyList[source].head = thisNode;
 
-	newNode = createNode(source);
-	newNode->next = thisGraph->adjacencyList[sink].head;
-	thisGraph->adjacencyList[sink].head = newNode;
+	thisNode = newNode(source);
+	thisNode->next = thisGraph->adjacencyList[sink].head;
+	thisGraph->adjacencyList[sink].head = thisNode;
 }
 
 /**
