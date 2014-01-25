@@ -32,19 +32,22 @@ struct graph *createGraph(int verticesCount) {
 /**
  * Add an edge to a graph
  */
-void addEdge(struct graph *currentGraph, int source, int sink) {
+void addEdge(struct graph *thisGraph, int source, int sink) {
 	struct node *newNode = createNode(sink);
 
-	newNode->next = currentGraph->adjacencyList[source].head;
-	currentGraph->adjacencyList[source].head = newNode;
+	newNode->next = thisGraph->adjacencyList[source].head;
+	thisGraph->adjacencyList[source].head = newNode;
 
 	newNode = createNode(source);
-	newNode->next = currentGraph->adjacencyList[sink].head;
-	currentGraph->adjacencyList[sink].head = newNode;
+	newNode->next = thisGraph->adjacencyList[sink].head;
+	thisGraph->adjacencyList[sink].head = newNode;
 }
 
-void addEdges(struct graph *currentGraph, int listLength, int adjacencyList[][2]) {
+/**
+ * Add a set of edges to a graph
+ */
+void addEdges(struct graph *thisGraph, int listLength, int adjacencyList[][2]) {
 	for (int i = 0; i < listLength; ++i) {
-		addEdge(currentGraph, adjacencyList[i][0], adjacencyList[i][1]);
+		addEdge(thisGraph, adjacencyList[i][0], adjacencyList[i][1]);
 	}
 }
