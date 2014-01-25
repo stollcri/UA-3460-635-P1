@@ -3,20 +3,7 @@
  * Christopher Stoll, 2014
  */
 
-/**
- * Simple node structure
- */
-struct node {
-	int vertex;
-	struct node *next;
-};
-
-/**
- * Simple list structure
- */
-struct list {
-	struct node *head;
-};
+#include "dataStructures.c"
 
 /**
  * Simple graph structure
@@ -62,6 +49,10 @@ void addEdge(struct graph *currentGraph, int source, int sink) {
 
 	newNode->next = currentGraph->adjacencyList[source].head;
 	currentGraph->adjacencyList[source].head = newNode;
+
+	newNode = createNode(source);
+	newNode->next = currentGraph->adjacencyList[sink].head;
+	currentGraph->adjacencyList[sink].head = newNode;
 }
 
 void addEdges(struct graph *currentGraph, int listLength, int adjacencyList[][2]) {
