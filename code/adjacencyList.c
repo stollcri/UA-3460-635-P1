@@ -14,18 +14,6 @@ struct graph {
 };
 
 /**
- * Node creation function
- */
-struct node *createNode(int vertex) {
-	struct node *newNode = (struct node*) malloc(sizeof(struct node));
-
-	newNode->vertex = vertex;
-	newNode->next = NULL;
-
-	return newNode;
-}
-
-/**
  * Graph creation function
  */
 struct graph *createGraph(int verticesCount) {

@@ -17,3 +17,15 @@ struct node {
 struct list {
 	struct node *head;
 };
+
+/**
+ * Node creation function
+ */
+struct node *createNode(int vertex) {
+	struct node *newNode = (struct node*) malloc(sizeof(struct node));
+
+	newNode->vertex = vertex;
+	newNode->next = NULL;
+
+	return newNode;
+}
