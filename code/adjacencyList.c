@@ -66,3 +66,9 @@ void addEdge(struct graph *currentGraph, int source, int sink) {
 	newNode->next = currentGraph->adjacencyList[source].head;
 	currentGraph->adjacencyList[source].head = newNode;
 }
+
+void addEdges(struct graph *currentGraph, int listLength, int adjacencyList[][2]) {
+	for (int i = 0; i < listLength; ++i) {
+		addEdge(currentGraph, adjacencyList[i][0], adjacencyList[i][1]);
+	}
+}
