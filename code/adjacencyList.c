@@ -3,9 +3,6 @@
  * Christopher Stoll, 2014
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-
 /**
  * Simple node structure
  */

@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "AdjacencyList.c"
 
 void printGraph(struct graph* currentGraph) {
