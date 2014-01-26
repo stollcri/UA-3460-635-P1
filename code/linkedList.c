@@ -6,6 +6,7 @@
 #ifndef INCLUDE_LINKEDLIST
 #define INCLUDE_LINKEDLIST
 
+#include <stdlib.h>
 #include "node.c"
 
 /**
@@ -14,5 +15,16 @@
 struct list {
 	struct node *head;
 };
+
+/**
+ * List creation function
+ */
+struct list *newList() {
+	struct list *thisList = (struct list*) malloc(sizeof(struct list));
+
+	thisList->head = NULL;
+
+	return thisList;
+}
 
 #endif
