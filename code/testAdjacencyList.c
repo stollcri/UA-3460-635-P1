@@ -3,12 +3,12 @@
 
 void printGraph(struct graph* currentGraph) {
     for (int v = 0; v < currentGraph->verticesCount; ++v) {
-        struct node* pCrawl = currentGraph->adjacencyList[v].head;
+        struct node *currentNode = currentGraph->adjacencyList[v].head;
         
         printf("Adjacency list of vertex %d\n head ", v);
-        while (pCrawl) {
-            printf("-> %d", pCrawl->vertex);
-            pCrawl = pCrawl->next;
+        while (currentNode) {
+            printf("-> %d", currentNode->vertex);
+            currentNode = currentNode->next;
         }
         printf("\n");
     }
