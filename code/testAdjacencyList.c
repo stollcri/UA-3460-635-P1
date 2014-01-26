@@ -17,31 +17,20 @@ void printGraph(struct graph* currentGraph) {
 void testGraph() {
 	struct graph *myGraph = createGraph(12);
 	
-	int myList[12][2];
-	myList[0][0] = 0;
-	myList[0][1] = 1;
-	myList[1][0] = 1;
-	myList[1][1] = 2;
-	myList[2][0] = 1;
-	myList[2][1] = 3;
-	myList[3][0] = 1;
-	myList[3][1] = 4;
-	myList[4][0] = 2;
-	myList[4][1] = 5;
-	myList[5][0] = 2;
-	myList[5][1] = 6;
-	myList[6][0] = 4;
-	myList[6][1] = 7;
-	myList[7][0] = 4;
-	myList[7][1] = 8;
-	myList[8][0] = 5;
-	myList[8][1] = 9;
-	myList[9][0] = 5;
-	myList[9][1] = 10;
-	myList[10][0] = 7;
-	myList[10][1] = 11;
-	myList[11][0] = 7;
-	myList[11][1] = 12;
+	int myList[12][2] = {
+		{0, 1},
+		{1, 2},
+		{1, 3},
+		{1, 4},
+		{2, 5},
+		{2, 6},
+		{4, 7},
+		{4, 8},
+		{5, 9},
+		{5, 10},
+		{7, 11},
+		{7, 12}
+	};
 	addEdges(myGraph, 12, myList);
 	printGraph(myGraph);
 
