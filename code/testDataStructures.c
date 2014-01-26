@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "dataStructures.c"
+#include "linkedList.c"
+#include "queue.c"
 
 int main(int argc, char const *argv[]) {
 	struct queue *myQueue = newQueue();
