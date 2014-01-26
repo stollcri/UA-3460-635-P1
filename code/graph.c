@@ -27,12 +27,7 @@ struct graph *createGraph(int verticesCount) {
 	newGraph->adjacencyList = (struct list*) malloc(sizeof(struct list) * verticesCount);
 
 	for (int i = 0; i < verticesCount; ++i) {
-		if (i != 0) {
-			newGraph->adjacencyList[i].head = NULL;
-		} else {
-			// create starting node
-			newGraph->adjacencyList[i].head = newNode(0);
-		}
+		newGraph->adjacencyList[i].head = NULL;
 	}
 
 	return newGraph;
@@ -42,6 +37,15 @@ struct graph *createGraph(int verticesCount) {
  * Add an edge to a graph
  */
 void addEdge(struct graph *thisGraph, int source, int sink) {
+	/*
+	 * TODO: add bounds checking
+	 *       adding a backlink from 12 to 7 results in a
+	 *       memmory address being assigned to the first itmes
+	 *       list. To reproduce in the test file change:
+	 *         struct graph *myGraph = createGraph(1+12);
+	 *       to
+	 *         struct graph *myGraph = createGraph(12);
+	 */
 	struct node *thisNode = newNode(sink);
 	
 	thisNode->next = thisGraph->adjacencyList[source].head;
