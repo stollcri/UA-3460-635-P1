@@ -17,7 +17,7 @@ void testQueue() {
 	dequeue(myQueue);
 	dequeue(myQueue);
 
-	printf("testQueue complete. (no seg fault, then all is well) \n");
+	printf("~~~~~ testQueue complete. (no seg fault, then all is well) \n");
 }
 
 int main(int argc, char const *argv[]) {
