@@ -5,9 +5,9 @@ void printGraph(struct graph* currentGraph) {
     for (int v = 0; v < currentGraph->verticesCount; ++v) {
         struct node *currentNode = currentGraph->adjacencyList[v].head;
         
-        printf("Adjacency list of vertex %d\n head ", v);
+        printf("Adjacency list of vertex %d\n head", v);
         while (currentNode) {
-            printf("-> %d", currentNode->vertex);
+            printf(" -> %d", currentNode->vertex);
             currentNode = currentNode->next;
         }
         printf("\n");
@@ -15,7 +15,7 @@ void printGraph(struct graph* currentGraph) {
 }
 
 void testGraph() {
-	struct graph *myGraph = createGraph(12);
+	struct graph *myGraph = createGraph(1+12);
 	
 	int myList[12][2] = {
 		{0, 1},
