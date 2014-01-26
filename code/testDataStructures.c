@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "linkedList.c"
 #include "queue.c"
 
 void testQueue() {
