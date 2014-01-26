@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "graph.c"
 
 void printGraph(struct graph* currentGraph) {
