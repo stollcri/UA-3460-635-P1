@@ -39,6 +39,7 @@ struct list bfs(struct graph* thisGraph, int start, int end) {
 			// enqueue adjacent nodes
 			while ((adjacentNode = currentNode->next) != NULL) {
 				printf("INNER WHILE... %d \n", adjacentNode->vertex);
+				enqueue(bfsQueue, startNode->vertex);
 			}
 		}
 	}
