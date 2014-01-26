@@ -27,7 +27,12 @@ struct graph *createGraph(int verticesCount) {
 	newGraph->adjacencyList = (struct list*) malloc(sizeof(struct list) * verticesCount);
 
 	for (int i = 0; i < verticesCount; ++i) {
-		newGraph->adjacencyList[i].head = NULL;
+		if (i != 0) {
+			newGraph->adjacencyList[i].head = NULL;
+		} else {
+			// create starting node
+			newGraph->adjacencyList[i].head = newNode(0);
+		}
 	}
 
 	return newGraph;
@@ -38,7 +43,7 @@ struct graph *createGraph(int verticesCount) {
  */
 void addEdge(struct graph *thisGraph, int source, int sink) {
 	struct node *thisNode = newNode(sink);
-
+	
 	thisNode->next = thisGraph->adjacencyList[source].head;
 	thisGraph->adjacencyList[source].head = thisNode;
 
