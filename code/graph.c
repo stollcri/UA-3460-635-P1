@@ -6,7 +6,6 @@
 #ifndef INCLUDE_GRAPH
 #define INCLUDE_GRAPH
 
-#include "node.c"
 #include "linkedList.c"
 
 /**
