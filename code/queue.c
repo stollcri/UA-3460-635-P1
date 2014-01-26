@@ -9,8 +9,6 @@
 #include <stdlib.h>
 #include "node.c"
 
-#include <stdio.h>
-
 /**
  * Simple queue structure
  */
@@ -40,11 +38,9 @@ void enqueue(struct queue *thisQueue, int vertex) {
 	if (thisQueue->head == NULL) {
 		thisQueue->head = thisNode;
 		thisQueue->tail = thisNode;
-
-		printf("NULL \n");
 	} else {
-		// TODO: finish this
-		printf("NOT NULL \n");
+		thisQueue->tail->next = thisNode;
+		thisQueue->tail = thisNode;
 	}
 }
 
@@ -52,13 +48,14 @@ void enqueue(struct queue *thisQueue, int vertex) {
  * Dequeue a node
  */
 struct node *dequeue(struct queue *thisQueue) {
-	// TODO: implement this
-	struct node *thisNode = newNode(0);
+	struct node *thisNode = thisQueue->head;
 
-	if (thisQueue->head == NULL) {
-		printf("NULL \n");
-	} else {
-		printf("NOT NULL \n");
+	if (thisNode != NULL) {
+		if (thisNode->next != NULL) {
+			thisQueue->head = thisNode->next;
+		} else {
+			thisQueue->head = NULL;
+		}
 	}
 
 	return thisNode;
