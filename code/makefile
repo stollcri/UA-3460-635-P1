@@ -1,9 +1,9 @@
 all:
-	cc -o a.out adjacencyList.c
+	cc -o testDataStructures testDataStructures.c
 
 test:
-	cc -o dataStructuresTest dataStructuresTest.c
-	cc -o adjacencyListTest adjacencyListTest.c
+	cc -o testDataStructures testDataStructures.c
+	cc -o testAdjacencyList testAdjacencyList.c
 
 clean:
 	rm adjacencyListTest
