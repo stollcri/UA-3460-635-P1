@@ -19,7 +19,7 @@ void testBFS() {
 		{7, 12}
 	};
 	addEdges(testGraph, 12, testList);
-	bfs(testGraph, 0, 0);
+	bfs(testGraph, 0, 12);
 
 	printf("  ~~~~ testBFS complete. \n");
 }
