@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "AdjacencyList.c"
+#include "graph.c"
 
 void printGraph(struct graph* currentGraph) {
     for (int v = 0; v < currentGraph->verticesCount; ++v) {
