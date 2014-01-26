@@ -14,6 +14,10 @@
 struct node {
 	int vertex;
 	struct node *next;
+	/* might need these:
+	int costToNext
+	int visited
+	*/
 };
 
 /**
