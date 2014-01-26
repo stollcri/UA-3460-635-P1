@@ -21,12 +21,12 @@ struct queue {
  * Queue creation function
  */
 struct queue *newQueue() {
-	struct queue *newQueue = (struct queue*) malloc(sizeof(struct queue));
+	struct queue *thisQueue = (struct queue*) malloc(sizeof(struct queue));
 
-	newQueue->head = NULL;
-	newQueue->tail = NULL;
+	thisQueue->head = NULL;
+	thisQueue->tail = NULL;
 
-	return newQueue;
+	return thisQueue;
 }
 
 /**
