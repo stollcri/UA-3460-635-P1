@@ -45,11 +45,11 @@ void testGraph() {
 	addEdges(myGraph, 12, myList);
 	printGraph(myGraph);
 
-	printf("~~~~~ printGraph complete. \n");
+	printf("  ~~~~ testGraph complete. \n");
 }
 
 int main(int argc, char const *argv[]) {
 	testGraph();
-
+	printf("~~~~~~ testAdjacencyList complete. \n");
 	return 0;
 }
