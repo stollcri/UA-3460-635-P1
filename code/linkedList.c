@@ -21,9 +21,7 @@ struct list {
  */
 struct list *newList() {
 	struct list *thisList = (struct list*) malloc(sizeof(struct list));
-
 	thisList->head = NULL;
-
 	return thisList;
 }
 

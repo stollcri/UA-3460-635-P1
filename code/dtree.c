@@ -19,7 +19,7 @@ struct dtree {
 };
 
 struct dtree * newTree(struct dtree * ancestor) {
-	struct dtree * result = (dtree *) malloc(sizeof(dtree));
+	struct dtree * result = (dtree *) malloc(sizeof(struct dtree));
 	result->data = NULL;
 	result->parent = ancestor;
 	result->children = NULL;
