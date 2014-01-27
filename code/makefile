@@ -1,4 +1,4 @@
-all:
+all: 
 	cc -o testBreadthFirstSearch testBreadthFirstSearch.c
 
 test:
@@ -11,4 +11,6 @@ test:
 	./testBreadthFirstSearch
 
 clean:
-	rm adjacencyListTest
+	-rm testDataStructures
+	-rm testAdjacencyList
+	-rm testBreadthFirstSearch
