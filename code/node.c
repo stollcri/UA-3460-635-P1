@@ -7,6 +7,7 @@
 #define INCLUDE_NODE
 
 #include <stdlib.h>
+#include <limits.h>
 
 /**
  * Simple node structure
@@ -14,10 +15,7 @@
 struct node {
 	int vertex;
 	struct node *next;
-	/* might need these:
-	int costToNext
-	int visited
-	*/
+	int costToNext;
 };
 
 /**
@@ -28,6 +26,7 @@ struct node *newNode(int vertex) {
 
 	thisNode->vertex = vertex;
 	thisNode->next = NULL;
+	thisNode->costToNext = INT_MAX;
 
 	return thisNode;
 }
