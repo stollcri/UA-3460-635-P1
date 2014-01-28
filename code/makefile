@@ -1,5 +1,5 @@
 all: 
-	cc -o testBreadthFirstSearch testBreadthFirstSearch.c
+	cc -o testAdjacencyList testAdjacencyList.c
 
 test:
 	cc -o testDataStructures testDataStructures.c
