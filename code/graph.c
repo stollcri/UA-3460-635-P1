@@ -7,7 +7,12 @@
 #define INCLUDE_GRAPH
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
+#include <ctype.h>
 #include "linkedList.c"
+
+#define MAX_LINE_SIZE 1024
 
 /**
  * Simple graph structure
@@ -34,9 +39,9 @@ struct graph *createGraph(int verticesCount) {
 }
 
 /**
- * Add an edge to a graph
+ * Add an edge to a graph with a cost
  */
-void addEdge(struct graph *thisGraph, int source, int sink) {
+void addEdgeWithCost(struct graph *thisGraph, int source, int sink, int cost) {
 	/*
 	 * TODO: add bounds checking
 	 *       adding a backlink from 12 to 7 results in a
@@ -46,14 +51,30 @@ void addEdge(struct graph *thisGraph, int source, int sink) {
 	 *       to
 	 *         struct graph *myGraph = createGraph(12);
 	 */
-	struct node *thisNode = newNode(sink);
+	struct node *thisNode = newNodeWithCost(sink, cost);
 	
 	thisNode->next = thisGraph->adjacencyList[source].head;
 	thisGraph->adjacencyList[source].head = thisNode;
 
-	thisNode = newNode(source);
+	thisNode = newNodeWithCost(source, cost);
 	thisNode->next = thisGraph->adjacencyList[sink].head;
 	thisGraph->adjacencyList[sink].head = thisNode;
+}
+
+/**
+ * Add an edge to a graph
+ */
+void addEdge(struct graph *thisGraph, int source, int sink) {
+	addEdgeWithCost(thisGraph, source, sink, 0);
+}
+
+/**
+ * Add a set of edges to a graph with costs
+ */
+void addEdgesWithCost(struct graph *thisGraph, int listLength, int adjacencyList[][3]) {
+	for (int i = 0; i < listLength; ++i) {
+		addEdgeWithCost(thisGraph, adjacencyList[i][0], adjacencyList[i][1], adjacencyList[i][2]);
+	}
 }
 
 /**
@@ -63,6 +84,71 @@ void addEdges(struct graph *thisGraph, int listLength, int adjacencyList[][2]) {
 	for (int i = 0; i < listLength; ++i) {
 		addEdge(thisGraph, adjacencyList[i][0], adjacencyList[i][1]);
 	}
+}
+
+void addEdgesFromLine(struct graph *thisGraph, char *line, int startVertex) {
+	int vertex = INT_MAX;
+	int cost = INT_MAX;
+
+	int nextDigit = 0;
+	int currentNumber = 0;
+
+	int loopCount = 0;
+	int charCount = 0;
+	while (line[loopCount]) {
+		if (isspace(line[loopCount]) || line[loopCount] == '\n') {
+			if (vertex == INT_MAX) {
+				vertex = currentNumber;
+			} else if (cost == INT_MAX) {
+				cost = currentNumber;
+				addEdgeWithCost(thisGraph, startVertex, vertex, cost);
+
+				vertex = INT_MAX;
+				cost = INT_MAX;
+			}
+
+			currentNumber = 0;
+			charCount = 0;
+		} else {
+			nextDigit = line[loopCount] - '0';
+			currentNumber *= 10;
+			currentNumber += nextDigit;
+			++charCount;
+		}
+		++loopCount;
+	}
+}
+
+/**
+ * Add a set of edges to a graph from a file
+ */
+struct graph *createGraphFromFile(char *fileName) {
+	FILE *pFile;
+	char line[MAX_LINE_SIZE];
+
+	// TODO: There is surely a better way to do this,
+	//       but it works for now
+	int loopCount = 0;
+	pFile = fopen(fileName, "r");
+	if (pFile != NULL) {
+		while (fgets(line, MAX_LINE_SIZE, pFile) != NULL) {
+			++loopCount;
+		}
+	}
+	fclose(pFile);
+	struct graph *thisGraph = createGraph(loopCount+1);
+
+	loopCount = 0;
+	pFile = fopen(fileName, "r");
+	if (pFile != NULL) {
+		while (fgets(line, MAX_LINE_SIZE, pFile) != NULL) {
+			addEdgesFromLine(thisGraph, line, loopCount);
+			++loopCount;
+		}
+	}
+	fclose(pFile);
+
+	return thisGraph;
 }
 
 #endif
