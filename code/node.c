@@ -31,4 +31,17 @@ struct node *newNode(int vertex) {
 	return thisNode;
 }
 
+/**
+ * Node creation function with a cost
+ */
+struct node *newNodeWithCost(int vertex, int cost) {
+	struct node *thisNode = (struct node*) malloc(sizeof(struct node));
+
+	thisNode->vertex = vertex;
+	thisNode->next = NULL;
+	thisNode->costToNext = cost;
+
+	return thisNode;
+}
+
 #endif
