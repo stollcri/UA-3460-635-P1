@@ -132,7 +132,9 @@ struct graph *createGraphFromFile(char *fileName) {
 	pFile = fopen(fileName, "r");
 	if (pFile != NULL) {
 		while (fgets(line, MAX_LINE_SIZE, pFile) != NULL) {
-			++loopCount;
+			if (line[0] != '#'){
+				++loopCount;
+			}
 		}
 	}
 	fclose(pFile);
@@ -142,8 +144,10 @@ struct graph *createGraphFromFile(char *fileName) {
 	pFile = fopen(fileName, "r");
 	if (pFile != NULL) {
 		while (fgets(line, MAX_LINE_SIZE, pFile) != NULL) {
-			addEdgesFromLine(thisGraph, line, loopCount);
-			++loopCount;
+			if (line[0] != '#'){
+				addEdgesFromLine(thisGraph, line, loopCount);
+				++loopCount;
+			}
 		}
 	}
 	fclose(pFile);
