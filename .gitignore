@@ -1,7 +1,10 @@
 _Store
 ._*
+
 a.out
+*.exe
+
 testDataStructures
 testAdjacencyList
 testBreadthFirstSearch
-
+testFordFulkerson
