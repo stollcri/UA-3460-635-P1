@@ -2,7 +2,7 @@
 #include "breadthFirstSearch.c"
 
 void testBFS() {
-	struct graph *testGraph = createGraph(12);
+	struct graph *testGraph = createGraph(1+12);
 	
 	int testList[12][2] = {
 		{0, 1},
