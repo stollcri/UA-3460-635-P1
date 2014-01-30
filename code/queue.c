@@ -8,13 +8,19 @@
 
 #include <stdlib.h>
 #include "node.c"
+#include "dtree.c"
 
 /**
  * Simple queue structure
  */
 struct queue {
-	struct node *head;
-	struct node *tail;
+	struct queueItem *head;
+	struct queueItem *tail;
+};
+
+struct queueItem {
+	struct queueItem * next;
+	struct dtree * data;
 };
 
 /**
@@ -32,33 +38,34 @@ struct queue *newQueue() {
 /**
  * Enqueue a node
  */
-void enqueue(struct queue *thisQueue, int vertex) {
-	struct node *thisNode = newNode(vertex);
-
+void enqueue(struct queue *thisQueue, struct dtree * thisBranch) {
+	struct queueItem * thisItem = (struct queueItem*) malloc(sizeof(struct queueItem));
+	thisItem->data = thisBranch;
 	if (thisQueue->head == NULL) {
-		thisQueue->head = thisNode;
-		thisQueue->tail = thisNode;
+		thisQueue->head = thisItem;
+		thisQueue->tail = thisItem;
 	} else {
-		thisQueue->tail->next = thisNode;
-		thisQueue->tail = thisNode;
+		thisQueue->tail->next = thisItem;
+		thisQueue->tail = thisItem;
 	}
 }
 
 /**
  * Dequeue a node
  */
-struct node *dequeue(struct queue *thisQueue) {
-	struct node *thisNode = thisQueue->head;
-
+struct dtree *dequeue(struct queue *thisQueue) {
+	struct queueItem *thisNode = thisQueue->head;
+	struct dtree * result;
 	if (thisNode != NULL) {
 		if (thisNode->next != NULL) {
 			thisQueue->head = thisNode->next;
 		} else {
 			thisQueue->head = NULL;
 		}
+		result = thisNode->data;
+		free(thisNode);
 	}
-
-	return thisNode;
+	return result;
 }
 
 #endif
