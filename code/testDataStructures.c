@@ -1,13 +1,19 @@
 #include <stdio.h>
+#include "dtree.c"
 #include "queue.c"
 
 void testQueue() {
 	struct queue *myQueue = newQueue();
 
-	enqueue(myQueue, 1);
-	enqueue(myQueue, 2);
-	enqueue(myQueue, 3);
-	enqueue(myQueue, 4);
+	struct dtree *myTree1 = newTree(NULL);
+	struct dtree *myTree2 = newTree(NULL);
+	struct dtree *myTree3 = newTree(NULL);
+	struct dtree *myTree4 = newTree(NULL);
+
+	enqueue(myQueue, myTree1);
+	enqueue(myQueue, myTree2);
+	enqueue(myQueue, myTree3);
+	enqueue(myQueue, myTree4);
 
 	dequeue(myQueue);
 	dequeue(myQueue);
