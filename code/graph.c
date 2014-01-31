@@ -53,13 +53,14 @@ void addEdgeWithCost(struct graph *thisGraph, int source, int sink, int cost) {
 	 *         struct graph *myGraph = createGraph(12);
 	 */
 	struct node *thisNode = newNodeWithCost(sink, cost);
-	
 	thisNode->next = thisGraph->adjacencyList[source].head;
 	thisGraph->adjacencyList[source].head = thisNode;
 
+	/* this code adds a link back from the sink to the source
 	thisNode = newNodeWithCost(source, cost);
 	thisNode->next = thisGraph->adjacencyList[sink].head;
 	thisGraph->adjacencyList[sink].head = thisNode;
+	*/
 }
 
 /**
