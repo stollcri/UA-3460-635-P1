@@ -1,7 +1,7 @@
 /**
  * Breadth Firt Search
  * Christopher Stoll, 2014
- * Last updated by Michael Crouse, 1/26/14
+ * Last updated by Michael Crouse, 2/1/14
  */
 
 #include <stdlib.h>
@@ -27,7 +27,7 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 	for (i = 0; i < thisGraph->verticesCount; i++) seen[i] = 0;
 	struct list *bfsPath;
 	struct dtree *bfsTree, *currentBranch, *currentChild;
-	struct node *startNode = thisGraph->adjacencyList[start].head;
+	struct node *startNode = thisGraph->adjacencyList[start].self;
 	struct node *currentNode;
 	struct node *adjacentNode;
 	struct stack *traceStack;
@@ -99,7 +99,7 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 		while (currentNode->vertex != end) {
 			currentNode = pop(traceStack);
 			adjacentNode->next = newNodeWithCost(currentNode->vertex, currentNode->capacity);
-			if(DBGBFS) printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
+			if(DBGBFS) printf("ADDING NODE %d TO LIST WITH CAPACITY %d\n", currentNode->vertex, currentNode->capacity);
 			adjacentNode = adjacentNode->next;
 		}
 	}

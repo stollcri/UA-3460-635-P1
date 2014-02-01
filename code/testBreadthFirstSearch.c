@@ -22,7 +22,7 @@ void testBFS() {
 	*/
 	struct graph *testGraph = createGraphFromFile("testdata/testList-advanced.txt");
 	bfs(testGraph, 0, 12);
-
+	
 	printf("  ~~~~ testBFS complete. \n");
 }
 

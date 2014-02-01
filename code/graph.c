@@ -1,6 +1,7 @@
 /**
  * Graph Data Structure
  * Christopher Stoll, 2014
+ * Edited by Michael Crouse 2/1/14
  */
 
 #ifndef INCLUDE_GRAPH
@@ -34,6 +35,7 @@ struct graph *createGraph(int verticesCount) {
 
 	for (i = 0; i < verticesCount; ++i) {
 		newGraph->adjacencyList[i].head = NULL;
+		newGraph->adjacencyList[i].self = newNode(i);
 	}
 
 	return newGraph;

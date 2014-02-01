@@ -1,6 +1,7 @@
 /**
  * Ford-Fulkerson Algorithm
  * Christopher Stoll, 2014
+ * Laste edited by Michael Crouse 2/1/2014
  */
 
 #include "breadthFirstSearch.c"
@@ -13,11 +14,11 @@
 /**
  * Calculate the maximum flow along a path
  */
-int pathFlow(struct list *thisPath) {
-	struct node *currentNode = thisPath->head;
+int pathFlow(struct list *thisPath, int sink) {
+	//go to the first node after the s, path starts at s and has no cost/capacity
+	struct node *currentNode = thisPath->head->next;
 	struct node *nextNode = NULL;
     int flow = INT_MAX;
-
     while (currentNode) {
         if (currentNode->capacity < flow) {
         	flow = currentNode->capacity;
@@ -64,7 +65,8 @@ void residual(struct graph *thisGraph, struct list *thisPath, int flow) {
 }
 
 void printResidualGraph(struct graph* currentGraph) {
-    for (int v = 0; v < currentGraph->verticesCount; ++v) {
+    int v;
+    for (v = 0; v < currentGraph->verticesCount; ++v) {
         struct node *currentNode = currentGraph->adjacencyList[v].head;
         
         printf("Adjacency list of vertex %d\n head", v);
@@ -87,7 +89,7 @@ int maxFlow(struct graph *thisGraph, int source, int sink) {
 	// while there are still paths
 	while (path != NULL) {
 		// determine max flow for this path
-		flow = pathFlow(path);
+		flow = pathFlow(path, sink);
 		if(DBGFF) printf("FLOW: %d \n", flow);
 
 		// determine the residual graph
