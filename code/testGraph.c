@@ -38,7 +38,7 @@ void testGraph() {
 }
 
 void testGraphFromFile() {
-	struct graph *myGraph = createGraphFromFile("_testList-basic.txt");
+	struct graph *myGraph = createGraphFromFile("testdata/testList-advanced.txt");
 	printGraph(myGraph);
 
 	printf("  ~~~~ testGraphFromFile complete. \n");
