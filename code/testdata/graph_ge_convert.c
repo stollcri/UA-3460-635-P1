@@ -22,6 +22,7 @@ int processLine(char *line, int currentVertex) {
 	int currentNumber = 0;
 
 	int loopCount = 0;
+
 	while (line[loopCount]) {
 		// space delimited values
 		if (isspace(line[loopCount]) || line[loopCount] == '\n') {
@@ -39,11 +40,12 @@ int processLine(char *line, int currentVertex) {
 				} else if (cost == INT_MAX) {
 					cost = currentNumber;
 					
-					if (vertexA == currentVertex) {
-						printf(" %d %d", vertexB, cost);
-					} else {
-						printf("\n%d %d", vertexB, cost);
+					if (vertexA != currentVertex) {
+						for (int i = 0; i < (vertexA  - currentVertex); ++i) {
+							printf("\n");
+						}
 					}
+					printf(" %d %d", vertexB, cost);
 
 					returnValue = vertexA;
 					vertexA = INT_MAX;
@@ -80,6 +82,7 @@ void processGeneratedGraph(const char *fileName) {
 				currentVertex = nextVertex;
 			}
 		}
+		printf("\n");
 	}
 	fclose(pFile);
 }
