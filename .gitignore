@@ -8,3 +8,6 @@ testDataStructures
 testGraph
 testBreadthFirstSearch
 testFordFulkerson
+generateGraph
+
+code/testdata/graph_ge
