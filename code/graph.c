@@ -90,6 +90,9 @@ void addEdges(struct graph *thisGraph, int listLength, int adjacencyList[][2]) {
 	}
 }
 
+/**
+ * Add edges to a graph from a line representing an adjacnecy list
+ */
 void addEdgesFromLine(struct graph *thisGraph, char *line, int startVertex) {
 	int vertex = INT_MAX;
 	int cost = INT_MAX;
