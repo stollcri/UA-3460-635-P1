@@ -1,5 +1,7 @@
-all: 
+default: 
 	cc -o testFordFulkerson testFordFulkerson.c
+
+all: clean test
 
 test:
 	cc -o testDataStructures testDataStructures.c
@@ -10,8 +12,11 @@ test:
 	./testDataStructures
 	./testGraph
 	./testBreadthFirstSearch
+	./testFordFulkerson
 
 clean:
 	-rm testDataStructures
-	-rm testAdjacencyList
+	-rm testGraph
 	-rm testBreadthFirstSearch
+	-rm testFordFulkerson
+	-rm generateGraph
