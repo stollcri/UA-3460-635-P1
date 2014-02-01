@@ -60,7 +60,7 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 			// enqueue adjacent nodes that have not yet been seen
 			while (adjacentNode != NULL) {
 				if(DBGBFS) printf("INNER WHILE... %d \n", adjacentNode->vertex);
-				if (seen[adjacentNode->vertex]== 0) {
+				if ((seen[adjacentNode->vertex] == 0) && (adjacentNode->capacity > 0)) {
 					if(DBGBFS) printf("UNSEEN %d, QUEUEING\n", adjacentNode->vertex);
 					if (currentChild==NULL) {
 						currentBranch->children = newTree(currentBranch);
@@ -90,13 +90,11 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 		} while(currentBranch != bfsTree);
 		bfsPath = newList();
 		currentNode = pop(traceStack);
-		//bfsPath->head = newNode(currentNode->vertex);
 		bfsPath->head = newNodeWithCost(currentNode->vertex, currentNode->capacity);
 		if(DBGBFS) printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
 		adjacentNode = bfsPath->head;
 		while (currentNode->vertex != end) {
 			currentNode = pop(traceStack);
-			//adjacentNode->next = newNode(currentNode->vertex);
 			adjacentNode->next = newNodeWithCost(currentNode->vertex, currentNode->capacity);
 			if(DBGBFS) printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
 			adjacentNode = adjacentNode->next;
