@@ -135,6 +135,8 @@ struct graph *createGraphFromFile(char *fileName) {
 
 	// TODO: There is surely a better way to do this,
 	//       but it works for now
+	// TODO: Expand the array if there are sink nodes
+	//       which are outside of current bounds
 	int loopCount = 0;
 	pFile = fopen(fileName, "r");
 	if (pFile != NULL) {
