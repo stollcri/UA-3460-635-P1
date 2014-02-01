@@ -4,7 +4,7 @@
 void testMaxFlow() {
 	int maximumFlow = 0;
 	struct graph *testGraph = createGraphFromFile("testdata/testList-advanced.txt");
-	maximumFlow = maxFlow(testGraph, 0, 12);
+	maximumFlow = maxFlow(testGraph, 0, 1024);
 
 	printf("  ~~~~ testMaxFlow complete. (MAX FLOW = %d) \n", maximumFlow);
 }

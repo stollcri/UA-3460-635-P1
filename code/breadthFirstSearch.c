@@ -13,15 +13,14 @@
 
 #include <stdio.h>
 
-#define DBGBFS 0
+#define DBGBFS 1
 
 /*
  * Perform BFS on a graph
  */
 struct list *bfs(struct graph* thisGraph, int start, int end) {
 	//check if source or sink are in the graph, or if source has no path out
-	if (thisGraph == NULL || start > thisGraph->verticesCount || end > thisGraph->verticesCount
-		|| thisGraph->adjacencyList[start].head == NULL) return NULL;
+	if (thisGraph == NULL || thisGraph->adjacencyList[start].head == NULL) return NULL;
 	struct queue *bfsQueue = newQueue();
 	int i, sinkFound;
 	//an array to keep track of which nodes we have "seen"
@@ -51,7 +50,9 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 			if(DBGBFS) printf("END. \n");
 			sinkFound=1;
 			break;
-		} else {
+		} 
+		else if (currentNode->vertex >= thisGraph->verticesCount) {} //dead end vertex, do nothing
+		else {
 			currentChild = NULL;
 			adjacentNode = thisGraph->adjacencyList[currentNode->vertex].head;
 			// enqueue adjacent nodes that have not yet been seen
@@ -68,8 +69,8 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 						currentChild = currentChild->next;
 					}
 					currentChild->data = adjacentNode;
-					enqueue(bfsQueue, currentChild);
-					seen[adjacentNode->vertex] = 1;
+					enqueue(bfsQueue, currentChild);;
+					if (adjacentNode->vertex < thisGraph->verticesCount) seen[adjacentNode->vertex] = 1;
 				}
 				adjacentNode = adjacentNode->next;
 			}

@@ -20,8 +20,8 @@ void testBFS() {
 	};
 	addEdges(testGraph, 12, testList);
 	*/
-	struct graph *testGraph = createGraphFromFile("testdata/testList-advanced.txt");
-	bfs(testGraph, 0, 12);
+	struct graph *testGraph = createGraphFromFile("testdata/v0256e1024.txt");
+	bfs(testGraph, 0, 304);
 	
 	printf("  ~~~~ testBFS complete. \n");
 }
