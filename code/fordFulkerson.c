@@ -87,6 +87,7 @@ void printResidualGraph(struct graph* currentGraph) {
  */
 int maxFlow(struct graph *thisGraph, int source, int sink) {
 	int flow = 0;
+	int maximumFlow = 0;
 	
 	if(DBGFF) printf("BFS 0 ... ");
 	// initial bfs graph traversal
@@ -96,7 +97,8 @@ int maxFlow(struct graph *thisGraph, int source, int sink) {
 	// while there are still paths
 	while (path != NULL) {
 		// determine max flow for this path
-		flow += pathFlow(path, sink);
+		flow = pathFlow(path, sink);
+		maximumFlow += flow;
 		if(DBGFF) printf("FLOW: %d \n", flow);
 
 		// determine the residual graph
@@ -109,5 +111,5 @@ int maxFlow(struct graph *thisGraph, int source, int sink) {
 		if(DBGFF) printf("DONE \n");
 	}
 	
-	return flow;
+	return maximumFlow;
 }
