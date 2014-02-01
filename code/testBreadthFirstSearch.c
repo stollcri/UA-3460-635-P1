@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "breadthFirstSearch.c"
 
-void testBFS() {
+void testBFS(char * filename) {
 	/*
 	struct graph *testGraph = createGraph(1+12);
 	int testList[12][2] = {
@@ -20,14 +20,14 @@ void testBFS() {
 	};
 	addEdges(testGraph, 12, testList);
 	*/
-	struct graph *testGraph = createGraphFromFile("testdata/v0256e1024.txt");
-	bfs(testGraph, 0, 304);
+	struct graph *testGraph = createGraphFromFile(filename);
+	bfs(testGraph, 0, 9999);
 	
 	printf("  ~~~~ testBFS complete. \n");
 }
 
-int main(int argc, char const *argv[]) {
-	testBFS();
+int main(int argc, char *argv[]) {
+	testBFS(argv[1]);
 	printf("~~~~~~ testBreadthFirstSearch complete. \n");
 	return 0;
 }
