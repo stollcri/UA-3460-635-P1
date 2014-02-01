@@ -47,10 +47,6 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 		// if we have found the target
 		currentNode = currentBranch->data;
 		if(DBGBFS) printf("OUTER WHILE... %d \n", currentNode->vertex);
-		//
-		// TODO: Make sure there are more nodes available
-		//       If the source is not in the graph it seg faults
-		//
 		if (currentNode->vertex == end) {
 			if(DBGBFS) printf("END. \n");
 			sinkFound=1;
