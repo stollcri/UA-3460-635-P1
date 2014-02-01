@@ -19,6 +19,9 @@
  * Perform BFS on a graph
  */
 struct list *bfs(struct graph* thisGraph, int start, int end) {
+	//check if source or sink are in the graph, or if source has no path out
+	if (thisGraph == NULL || start > thisGraph->verticesCount || end > thisGraph->verticesCount
+		|| thisGraph->adjacencyList[start].head == NULL) return NULL;
 	struct queue *bfsQueue = newQueue();
 	int i, sinkFound;
 	//an array to keep track of which nodes we have "seen"
