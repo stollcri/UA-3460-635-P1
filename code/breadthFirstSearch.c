@@ -90,12 +90,14 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 		} while(currentBranch != bfsTree);
 		bfsPath = newList();
 		currentNode = pop(traceStack);
-		bfsPath->head = newNode(currentNode->vertex);
+		//bfsPath->head = newNode(currentNode->vertex);
+		bfsPath->head = newNodeWithCost(currentNode->vertex, currentNode->capacity);
 		if(DBG) printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
 		adjacentNode = bfsPath->head;
 		while (currentNode->vertex != end) {
 			currentNode = pop(traceStack);
-			adjacentNode->next = newNode(currentNode->vertex);
+			//adjacentNode->next = newNode(currentNode->vertex);
+			adjacentNode->next = newNodeWithCost(currentNode->vertex, currentNode->capacity);
 			if(DBG) printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
 			adjacentNode = adjacentNode->next;
 		}
