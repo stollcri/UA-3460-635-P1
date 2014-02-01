@@ -16,11 +16,6 @@
 
 void testMaxFlowWithFile(char *fileName, int sink, int expectedFlow) {
 	int maximumFlow = 0;
-<<<<<<< HEAD
-	struct graph *testGraph = createGraphFromFile("testdata/testList-advanced.txt");
-	maximumFlow = maxFlow(testGraph, 0, 1024);
-=======
->>>>>>> 5a7f1a70181a156dd87da1fb00dbb098017def03
 
 	if (sink > 0) {
 		struct graph *testGraph = createGraphFromFile(fileName);
