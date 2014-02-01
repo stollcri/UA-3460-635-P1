@@ -50,9 +50,13 @@ void residual(struct graph *thisGraph, struct list *thisPath, int flow) {
         	if(DBGFF) printf("%d -> %d (x - %d = %d) \n", currentPathNode->vertex, currentNode->vertex, currentNode->flow, currentNode->capacity);
 
         	// advance to the next item in the path
-            currentPathNode = nextPathNode;
-    		nextPathNode = currentPathNode->next;
-    		currentNode = thisGraph->adjacencyList[currentPathNode->vertex].head;
+            if (nextPathNode->next) {
+	            currentPathNode = nextPathNode;
+	    		nextPathNode = currentPathNode->next;
+	    		currentNode = thisGraph->adjacencyList[currentPathNode->vertex].head;
+	    	} else {
+	    		currentNode = NULL;
+	    	}
     	
     	// advance to the next item in the linked list
     	} else {
