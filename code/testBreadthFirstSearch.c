@@ -2,8 +2,8 @@
 #include "breadthFirstSearch.c"
 
 void testBFS() {
+	/*
 	struct graph *testGraph = createGraph(1+12);
-	
 	int testList[12][2] = {
 		{0, 1},
 		{1, 2},
@@ -19,6 +19,8 @@ void testBFS() {
 		{7, 12}
 	};
 	addEdges(testGraph, 12, testList);
+	*/
+	struct graph *testGraph = createGraphFromFile("testdata/testList-advanced.txt");
 	bfs(testGraph, 0, 12);
 
 	printf("  ~~~~ testBFS complete. \n");
