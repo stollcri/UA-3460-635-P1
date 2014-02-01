@@ -2,6 +2,7 @@
 #include "fordFulkerson.c"
 
 void testMaxFlow() {
+	/*
 	struct graph *testGraph = createGraph(1+12);
 	
 	int testList[12][2] = {
@@ -19,6 +20,9 @@ void testMaxFlow() {
 		{7, 12}
 	};
 	addEdges(testGraph, 12, testList);
+	*/
+
+	struct graph *testGraph = createGraphFromFile("testdata/testList-advanced.txt");
 	maxFlow(testGraph, 0, 12);
 
 	printf("  ~~~~ testMaxFlow complete. \n");

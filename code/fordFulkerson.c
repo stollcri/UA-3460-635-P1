@@ -3,14 +3,15 @@
  * Christopher Stoll, 2014
  */
 
-#include "graph.c"
-//#include "breadthFirstSearch.c"
+#include "breadthFirstSearch.c"
 
-int maxFlow(struct graph *thisGraph, int start, int end) {
+#include <stdio.h>
+
+int maxFlow(struct graph *thisGraph, int source, int sink) {
 	int flow = 0;
-	/*
+	
 	// initial bfs graph traversal
-	struct list *path = bfs(thisGraph, start, end);
+	struct list *path = bfs(thisGraph, source, sink);
 	// while there are still paths
 	while (path != NULL) {
 		// determine residual
@@ -18,7 +19,7 @@ int maxFlow(struct graph *thisGraph, int start, int end) {
 
 		// flow = min(residuals)
 		//??????()
-		
+		/*
 		// for each edge in the path
 		for (int i = 0; i < pathLength; ++i){
 			if(positiveFLow) {
@@ -27,10 +28,10 @@ int maxFlow(struct graph *thisGraph, int start, int end) {
 				negativeFlow -= flow;
 			}
 		}
-		
+		*/
 		// find path in residual
-		path = bfs(thisGraph, start, end);
+		path = bfs(thisGraph, source, sink);
 	}
-	*/
+	
 	return flow;
 }
