@@ -48,14 +48,15 @@ void enqueue(struct queue *thisQueue, struct dtree * thisBranch) {
 		thisQueue->tail->next = thisItem;
 		thisQueue->tail = thisItem;
 	}
+	thisItem->next = NULL;
 }
 
 /**
  * Dequeue a node
  */
 struct dtree *dequeue(struct queue *thisQueue) {
-	struct queueItem *thisNode = thisQueue->head;
-	struct dtree * result;
+	struct queueItem * thisNode = thisQueue->head;
+	struct dtree * result = NULL;
 	if (thisNode != NULL) {
 		if (thisNode->next != NULL) {
 			thisQueue->head = thisNode->next;
