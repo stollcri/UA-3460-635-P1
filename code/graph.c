@@ -151,6 +151,12 @@ struct graph *createGraphFromFile(char *fileName) {
 	fclose(pFile);
 	struct graph *thisGraph = createGraph(loopCount+1);
 
+	// TODO: If we add a space to the end of each line before
+	//       calling addEdgesFromLine then we could catch files
+	//       which do not have a trailing newline.
+	//
+	//       We would have to adjust addEdgesFromLine so that it
+	//       doesn't key off of the newline also.
 	loopCount = 0;
 	pFile = fopen(fileName, "r");
 	if (pFile != NULL) {
