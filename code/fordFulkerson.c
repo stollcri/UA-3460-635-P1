@@ -39,7 +39,7 @@ void residual(struct graph *thisGraph, struct list *thisPath, int flow) {
     struct node *nextNode = NULL;
     
     // for each node in the path
-    while (currentNode) {
+    while (currentNode && (nextPathNode != NULL)) {
     	// find the sink node in the graph
     	if (currentNode->vertex == nextPathNode->vertex) {
     		//
