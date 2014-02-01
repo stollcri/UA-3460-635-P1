@@ -103,7 +103,7 @@ void addEdgesFromLine(struct graph *thisGraph, char *line, int startVertex) {
 	int currentNumber = 0;
 
 	int loopCount = 0;
-	int charCount = 0;
+	int charCount = 0; // TODO: remove this dead variable
 	while (line[loopCount]) {
 		if (isspace(line[loopCount]) || line[loopCount] == '\n') {
 			if (vertex == INT_MAX) {
