@@ -26,4 +26,14 @@ struct dtree * newTree(struct dtree * ancestor) {
 	result->next = NULL;
 	return result;
 }
+
+void treeFree(struct dtree * thisBranch) {
+	if (thisBranch == NULL) return;
+	//start with all siblings, if any
+	treeFree(thisBranch->next);
+	//then onto children
+	treeFree(thisBranch->children);
+	//we won't be killing the data because these nodes belong to the graph structure
+	free(thisBranch);
+}
 #endif

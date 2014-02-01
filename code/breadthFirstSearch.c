@@ -25,19 +25,19 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 	//nodes will be "grey" once seen and "black" once dequeued
 	int * seen = (int *) malloc(sizeof(int) * thisGraph->verticesCount);
 	for (i = 0; i < thisGraph->verticesCount; i++) seen[i] = 0;
-	struct list *bfsPath;
-	struct dtree *bfsTree, *currentBranch, *currentChild;
+	struct list *bfsPath = NULL;
+	struct dtree *bfsTree = NULL, *currentBranch = NULL, *currentChild = NULL;
 	struct node *startNode = thisGraph->adjacencyList[start].self;
-	struct node *currentNode;
-	struct node *adjacentNode;
-	struct stack *traceStack;
+	struct node *currentNode = NULL;
+	struct node *adjacentNode = NULL;
+	struct stack *traceStack = NULL;
 	if(DBGBFS) printf("BEGIN AT: %d \n", startNode->vertex);
 	//build the root node for the results tree
 	bfsTree = newTree(NULL);
 	bfsTree->data = startNode;
 	//enqueue the starting node
 	enqueue(bfsQueue, bfsTree);
-	seen[startNode->vertex] = 1;
+	seen[start] = 1;
 	sinkFound=0;
 	// while there are items in the queue
 	while ((currentBranch = dequeue(bfsQueue)) != NULL) {
@@ -98,6 +98,12 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 			adjacentNode = adjacentNode->next;
 		}
 	}
+	//clean up memory allocated by BFS
+	treeFree(bfsTree);
+	while (dequeue(bfsQueue) != NULL); //clear any nodes still in queue
+	free(bfsQueue);
+	//stack will by definition be out of elements, so we just need to free the data for the structure
+	if (traceStack != NULL) free(traceStack);
 	free(seen);
 	return bfsPath;
 }
