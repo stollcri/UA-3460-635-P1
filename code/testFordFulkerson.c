@@ -40,7 +40,7 @@ void testMaxFlow() {
 	testMaxFlowWithFile("testdata/testList-basic.txt", 3, 9);
 	testMaxFlowWithFile("testdata/testList-advanced.txt", 12, 26);
 	
-	testMaxFlowWithFile("testdata/testList-001.txt", 5, 999);
+	testMaxFlowWithFile("testdata/testList-001.txt", 5, 24);
 	testMaxFlowWithFile("testdata/testList-002.txt", 5, 999);
 	testMaxFlowWithFile("testdata/testList-003.txt", 00, 999);
 	testMaxFlowWithFile("testdata/testList-004.txt", 00, 999);
