@@ -41,14 +41,19 @@ void testMaxFlow() {
 	testMaxFlowWithFile("testdata/testList-004.txt", 0, 13, 50);
 	testMaxFlowWithFile("testdata/testList-005.txt", 0, 15, 50);
 
-	testMaxFlowWithFile("testdata/v0256e1024.txt", 1, 256, 128); 
-	testMaxFlowWithFile("testdata/v0256e2048.txt", 1, 256, 360); 
-	testMaxFlowWithFile("testdata/v0512e2048.txt", 1, 510, 99); 
-	testMaxFlowWithFile("testdata/v0512e4096.txt", 1, 512, 421); 
-	testMaxFlowWithFile("testdata/v1024e4096.txt", 1, 1022, 26); 
-	testMaxFlowWithFile("testdata/v1024e8192.txt", 1, 1024, 311); 
-	testMaxFlowWithFile("testdata/v2048e8192.txt", 1, 2046, 27); 
-	testMaxFlowWithFile("testdata/v2048e9999.txt", 1, 2048, 145); 
+	testMaxFlowWithFile("testdata/v0256e1024.txt", 1, 256, 128);
+	testMaxFlowWithFile("testdata/v0256e2048.txt", 1, 256, 360);
+	testMaxFlowWithFile("testdata/v0512e2048.txt", 1, 510, 99);
+	testMaxFlowWithFile("testdata/v0512e4096.txt", 1, 512, 421);
+	testMaxFlowWithFile("testdata/v1024e4096.txt", 1, 1022, 26);
+	testMaxFlowWithFile("testdata/v1024e8192.txt", 1, 1024, 311);
+	testMaxFlowWithFile("testdata/v2048e8192.txt", 1, 2046, 27);
+	testMaxFlowWithFile("testdata/v2048e9999.txt", 1, 2048, 145);
+
+	testMaxFlowWithFile("testdata/xl-v10000e40000.txt", 1, 10000, 167);
+	testMaxFlowWithFile("testdata/xl-v25000e100000.txt", 1, 20000, 0);
+	testMaxFlowWithFile("testdata/xl-v30000e140000.txt", 1, 30000, 104);
+	testMaxFlowWithFile("testdata/xl-v40000e160000.txt", 1, 40000, 60);
 
 	printf("  ~~~~ testMaxFlow complete. \n");
 }
