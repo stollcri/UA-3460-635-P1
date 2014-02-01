@@ -63,6 +63,19 @@ void residual(struct graph *thisGraph, struct list *thisPath, int flow) {
     }
 }
 
+void printResidualGraph(struct graph* currentGraph) {
+    for (int v = 0; v < currentGraph->verticesCount; ++v) {
+        struct node *currentNode = currentGraph->adjacencyList[v].head;
+        
+        printf("Adjacency list of vertex %d\n head", v);
+        while (currentNode) {
+            printf(" -> %d (%d)", currentNode->vertex, currentNode->capacity);
+            currentNode = currentNode->next;
+        }
+        printf("\n");
+    }
+}
+
 /**
  * Use Ford-Folkerson to calulate max-flow / min-cut
  */
@@ -79,7 +92,8 @@ int maxFlow(struct graph *thisGraph, int source, int sink) {
 
 		// determine the residual graph
 		residual(thisGraph, path, flow);
-
+		if(DBGFF) printResidualGraph(thisGraph);
+		
 		// find path in residual
 		path = bfs(thisGraph, source, sink);
 	}
