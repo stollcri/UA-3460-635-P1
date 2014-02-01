@@ -3,12 +3,12 @@ all:
 
 test:
 	cc -o testDataStructures testDataStructures.c
-	cc -o testAdjacencyList testAdjacencyList.c
+	cc -o testGraph testGraph.c
 	cc -o testBreadthFirstSearch testBreadthFirstSearch.c
 	cc -o testFordFulkerson testFordFulkerson.c
 
-	./testAdjacencyList
 	./testDataStructures
+	./testGraph
 	./testBreadthFirstSearch
 
 clean:
