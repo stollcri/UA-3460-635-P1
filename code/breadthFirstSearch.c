@@ -16,7 +16,7 @@
 /*
  * Perform BFS on a graph
  */
-struct list bfs(struct graph* thisGraph, int start, int end) {
+struct list *bfs(struct graph* thisGraph, int start, int end) {
 	struct queue *bfsQueue = newQueue();
 	int i, sinkFound;
 	//an array to keep track of which nodes we have "seen"
@@ -44,6 +44,10 @@ struct list bfs(struct graph* thisGraph, int start, int end) {
 		// if we have found the target
 		currentNode = currentBranch->data;
 		printf("OUTER WHILE... %d \n", currentNode->vertex);
+		//
+		// TODO: Make sure there are more nodes available
+		//       If the source is not in the graph it seg faults
+		//
 		if (currentNode->vertex == end) {
 			printf("END. \n");
 			sinkFound=1;
@@ -95,6 +99,6 @@ struct list bfs(struct graph* thisGraph, int start, int end) {
 		}
 	}
 	free(seen);
-	return *bfsPath;
+	return bfsPath;
 }
 
