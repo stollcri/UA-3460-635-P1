@@ -13,7 +13,7 @@
 
 #include <stdio.h>
 
-#define DBGBFS 0
+#define DBGBFS 1
 
 /*
  * Perform BFS on a graph
