@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-#define DBGFF 1
+#define DBGFF 0
 
 /**
  * Calculate the maximum flow along a path
