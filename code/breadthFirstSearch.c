@@ -13,6 +13,8 @@
 
 #include <stdio.h>
 
+#define DBG 0
+
 /*
  * Perform BFS on a graph
  */
@@ -29,7 +31,7 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 	struct node *currentNode;
 	struct node *adjacentNode;
 	struct stack *traceStack;
-	printf("BEGIN AT: %d \n", startNode->vertex);
+	if(DBG) printf("BEGIN AT: %d \n", startNode->vertex);
 	//build the root node for the results tree
 	bfsTree = newTree(NULL);
 	bfsTree->data = startNode;
@@ -43,13 +45,13 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 	//while ((currentNode = dequeue(bfsQueue)) != NULL) {
 		// if we have found the target
 		currentNode = currentBranch->data;
-		printf("OUTER WHILE... %d \n", currentNode->vertex);
+		if(DBG) printf("OUTER WHILE... %d \n", currentNode->vertex);
 		//
 		// TODO: Make sure there are more nodes available
 		//       If the source is not in the graph it seg faults
 		//
 		if (currentNode->vertex == end) {
-			printf("END. \n");
+			if(DBG) printf("END. \n");
 			sinkFound=1;
 			break;
 		} else {
@@ -57,9 +59,9 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 			adjacentNode = thisGraph->adjacencyList[currentNode->vertex].head;
 			// enqueue adjacent nodes that have not yet been seen
 			while (adjacentNode != NULL) {
-				printf("INNER WHILE... %d \n", adjacentNode->vertex);
+				if(DBG) printf("INNER WHILE... %d \n", adjacentNode->vertex);
 				if (seen[adjacentNode->vertex]== 0) {
-					printf("UNSEEN %d, QUEUEING\n", adjacentNode->vertex);
+					if(DBG) printf("UNSEEN %d, QUEUEING\n", adjacentNode->vertex);
 					if (currentChild==NULL) {
 						currentBranch->children = newTree(currentBranch);
 						currentChild = currentBranch->children;
@@ -82,19 +84,19 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 		traceStack = newStack();
 		push(traceStack, currentBranch->data);
 		do {
-			printf("TRACEBACK AT NODE %d\n", currentBranch->data->vertex);
+			if(DBG) printf("TRACEBACK AT NODE %d\n", currentBranch->data->vertex);
 			currentBranch = currentBranch->parent;
 			push(traceStack, currentBranch->data);
 		} while(currentBranch != bfsTree);
 		bfsPath = newList();
 		currentNode = pop(traceStack);
 		bfsPath->head = newNode(currentNode->vertex);
-		printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
+		if(DBG) printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
 		adjacentNode = bfsPath->head;
 		while (currentNode->vertex != end) {
 			currentNode = pop(traceStack);
 			adjacentNode->next = newNode(currentNode->vertex);
-			printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
+			if(DBG) printf("ADDING NODE %d TO LIST\n", currentNode->vertex);
 			adjacentNode = adjacentNode->next;
 		}
 	}
