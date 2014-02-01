@@ -7,7 +7,6 @@
 #define INCLUDE_NODE
 
 #include <stdlib.h>
-#include <limits.h>
 
 /**
  * Simple node structure
@@ -15,8 +14,8 @@
 struct node {
 	int vertex;
 	struct node *next;
-	int capacity;
-	int flow;
+	int capacity; // capacity to this node
+	int flow; // flow to this node
 };
 
 /**
