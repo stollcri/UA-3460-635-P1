@@ -13,7 +13,7 @@
 
 #include <stdio.h>
 
-#define DBGBFS 0
+#define DBGBFS 1
 
 /*
  * Perform BFS on a graph
@@ -70,11 +70,6 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 					}
 					currentChild->data = adjacentNode;
 					enqueue(bfsQueue, currentChild);
-					seen[adjacentNode->vertex] = 1;
-				}
-				//what if we haven't seen it but the capacity is zero?
-				else if (seen[adjacentNode->vertex] == 0) {
-					//we've seen it now, but we're not interested, so no enqueue
 					seen[adjacentNode->vertex] = 1;
 				}
 				adjacentNode = adjacentNode->next;

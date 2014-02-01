@@ -89,7 +89,7 @@ int maxFlow(struct graph *thisGraph, int source, int sink) {
 	// while there are still paths
 	while (path != NULL) {
 		// determine max flow for this path
-		flow = pathFlow(path, sink);
+		flow += pathFlow(path, sink);
 		if(DBGFF) printf("FLOW: %d \n", flow);
 
 		// determine the residual graph
