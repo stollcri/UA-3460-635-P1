@@ -15,20 +15,29 @@
 struct node {
 	int vertex;
 	struct node *next;
-	int costToNext;
+	int capacity;
+	int flow;
 };
 
 /**
  * Node creation function with a cost
  */
-struct node *newNodeWithCost(int vertex, int cost) {
+struct node *newNodeWithCostAndFlow(int vertex, int capacity, int flow) {
 	struct node *thisNode = (struct node*) malloc(sizeof(struct node));
 
 	thisNode->vertex = vertex;
 	thisNode->next = NULL;
-	thisNode->costToNext = cost;
+	thisNode->capacity = capacity;
+	thisNode->flow = flow;
 
 	return thisNode;
+}
+
+/**
+ * Node creation function with a cost
+ */
+struct node *newNodeWithCost(int vertex, int capacity) {
+	return newNodeWithCostAndFlow(vertex, capacity, 0);
 }
 
 /**

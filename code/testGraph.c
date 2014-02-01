@@ -7,7 +7,7 @@ void printGraph(struct graph* currentGraph) {
         
         printf("Adjacency list of vertex %d\n head", v);
         while (currentNode) {
-            printf(" -> %d (%d)", currentNode->vertex, currentNode->costToNext);
+            printf(" -> %d (%d)", currentNode->vertex, currentNode->capacity);
             currentNode = currentNode->next;
         }
         printf("\n");
