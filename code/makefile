@@ -14,6 +14,9 @@ test:
 	./testBreadthFirstSearch
 	./testFordFulkerson
 
+analysis:
+	cc -o analysisFordFulkerson analysisFordFulkerson.c
+
 clean:
 	-rm testDataStructures
 	-rm testGraph
