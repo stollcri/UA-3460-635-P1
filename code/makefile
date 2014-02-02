@@ -1,7 +1,9 @@
-default: 
-	cc -o testFordFulkerson testFordFulkerson.c
+default: ff
 
-all: clean test
+all: clean test analysis ff
+
+ff:
+	cc -o ff ff.c
 
 test:
 	cc -o testDataStructures testDataStructures.c
@@ -22,4 +24,5 @@ clean:
 	-rm testGraph
 	-rm testBreadthFirstSearch
 	-rm testFordFulkerson
-	-rm generateGraph
+	-rm analysisFordFulkerson
+	-rm ff
