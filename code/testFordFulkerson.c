@@ -3,6 +3,7 @@
  */
 
 #include <stdio.h>
+#include <sys/time.h>
 #include "fordFulkerson.c"
 
 #define KNRM  "\x1B[0m"
@@ -16,13 +17,18 @@
 
 void testMaxFlowWithFile(char *fileName, int source, int sink, int expectedFlow) {
 	int maximumFlow = 0;
+	struct timeval stop, start;
 
 	if (sink > 0) {
 		struct graph *testGraph = createGraphFromFile(fileName);
+		gettimeofday(&start, NULL);
 		maximumFlow = maxFlow(testGraph, source, sink);
+		gettimeofday(&stop, NULL);
 
 		if (maximumFlow == expectedFlow) {
-			printf("    ~~%s     OK%s, Max Flow = %d / %d (%s) \n", KGRN, KWHT, maximumFlow, expectedFlow, fileName);
+			//printf("    ~~%s     OK%s, Max Flow = %d / %d (%s) \n", KGRN, KWHT, maximumFlow, expectedFlow, fileName);
+			// measure time in microseconds
+			printf("    ~~%s     OK%s, Max Flow = %d\t%u us \n", KGRN, KWHT, maximumFlow, stop.tv_usec - start.tv_usec);
 		} else {
 			printf("    ~~%s NOT OK%s, Max Flow = %d / %d (%s) \n", KRED, KWHT, maximumFlow, expectedFlow, fileName);
 		}
@@ -36,7 +42,7 @@ void testMaxFlow() {
 	testMaxFlowWithFile("testdata/testList-advanced.txt", 0, 12, 26);
 	
 	testMaxFlowWithFile("testdata/testList-001.txt", 0, 5, 23);
-	testMaxFlowWithFile("testdata/testList-002.txt", 0, 3, 2000000);
+	testMaxFlowWithFile("testdata/testList-002.txt", 0, 3, 20000);
 	testMaxFlowWithFile("testdata/testList-003.txt", 0, 3, 9);
 	testMaxFlowWithFile("testdata/testList-004.txt", 0, 13, 50);
 	testMaxFlowWithFile("testdata/testList-005.txt", 0, 15, 50);
