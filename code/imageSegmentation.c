@@ -12,6 +12,9 @@
 
 #define MAX_LINE_SIZE 1024
 
+/**
+ * Get a single int from the begining of a string of characters
+ */
 void readOneInt(char *line, int *x) {
 	int tmpX = 0;
 	int nextDigit = 0, currentNumber = 0;
@@ -32,6 +35,9 @@ void readOneInt(char *line, int *x) {
 	}
 }
 
+/**
+ * Get two space sepperated ints from the begining of a string of characters
+ */
 void readTwoInts(char *line, int *x, int *y) {
 	int tmpX = 0, tmpY = 0;
 	int nextDigit = 0, currentNumber = 0;
@@ -58,10 +64,54 @@ void readTwoInts(char *line, int *x, int *y) {
 	}
 }
 
+/**
+ * Create a two dimensional array of integers
+ */
+int** make2dIntArray(int arraySizeX, int arraySizeY) {  
+	int** theArray;
+	theArray = (int**) malloc(arraySizeX*sizeof(int*));
+	for (int i = 0; i < arraySizeX; i++) {
+		theArray[i] = (int*) malloc(arraySizeY*sizeof(int));
+	}
+	return theArray;
+} 
+
+/**
+ * Read in a line from a PGM file
+ */
+void readPgmLine(char *line, int currentY, int xWidth, int **matrix) {
+	int nextDigit = 0, currentNumber = 0, currentX = 0;
+	int didProcessNumber = 0;
+
+	int loopCount = 0;
+	while (line[loopCount]) {
+		if (isspace(line[loopCount]) || line[loopCount] == '\n') {
+			if (didProcessNumber) {
+				matrix[currentX][currentY] = currentNumber;
+
+				didProcessNumber = 0;
+				currentNumber = 0;
+				++currentX;
+			}
+		} else {
+			nextDigit = line[loopCount] - '0';
+			currentNumber *= 10;
+			currentNumber += nextDigit;
+			didProcessNumber = 1;
+		}
+		++loopCount;
+	}
+}
+
+/**
+ * Process a PGM file
+ */
 struct graph *readPgmFile(char *fileName) {
 	FILE *pFile;
 	char line[MAX_LINE_SIZE];
 	int validPgmFile = 0, pgmX = 0, pgmY = 0, pgmZ = 0;
+	int currentY = 0;
+	int** imageMatrix;
 
 	struct graph *thisGraph = createGraph(1);
 
@@ -74,6 +124,7 @@ struct graph *readPgmFile(char *fileName) {
 					// get the graph coordinates
 					if ((pgmX == 0) && (pgmY == 0)) {
 						readTwoInts(line, &pgmX, &pgmY);
+						imageMatrix = make2dIntArray(pgmX, pgmY); 
 						printf("Extents: %d,%d \n", pgmX, pgmY);
 
 					// get the greyscale depth
@@ -83,7 +134,8 @@ struct graph *readPgmFile(char *fileName) {
 
 					// process image line
 					} else {
-						//
+						readPgmLine(line, currentY, pgmX, imageMatrix);
+						++currentY;
 					}
 
 				// look for PGM file marker
