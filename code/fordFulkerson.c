@@ -4,11 +4,15 @@
  * Laste edited by Michael Crouse 2/1/2014
  */
 
-#include "breadthFirstSearch.c"
+#ifndef INCLUDE_FORDFULKERSON
+#define INCLUDE_FORDFULKERSON
+
+#include <stdlib.h>
 #include <limits.h>
+#include "graph.c"
+#include "breadthFirstSearch.c"
 
 #include <stdio.h>
-
 #define DBGFF 0
 
 /**
@@ -113,3 +117,5 @@ int maxFlow(struct graph *thisGraph, int source, int sink) {
 	
 	return maximumFlow;
 }
+
+#endif

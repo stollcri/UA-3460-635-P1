@@ -4,7 +4,9 @@
 
 #include <stdio.h>
 #include <string.h>
+//#include "breadthFirstSearch.c" <= TODO: no include guards
 #include "fordFulkerson.c"
+#include "imageSegementation.c"
 
 void runBFS(char *fileName, int source, int sink) {
 	if ((strlen(fileName) != 0) && (source != sink)) {
