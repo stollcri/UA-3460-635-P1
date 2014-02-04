@@ -83,9 +83,8 @@ int** make2dIntArray(int arraySizeX, int arraySizeY) {
 void readPgmLine(char *line, int currentY, int xWidth, int **matrix) {
 	int nextDigit = 0, currentNumber = 0, currentX = 0;
 	int didProcessNumber = 0;
-
 	int loopCount = 0;
-	while (line[loopCount]) {
+	while ((line[loopCount]) && (currentX < xWidth)) {
 		if (isspace(line[loopCount]) || line[loopCount] == '\n') {
 			if (didProcessNumber) {
 				matrix[currentX][currentY] = currentNumber;
