@@ -67,21 +67,31 @@ void runFF(char *fileName) {
 
 void runIS(char *imageFileName, char *cutFileName) {
 	if ((strlen(imageFileName) != 0) && (strlen(cutFileName) != 0)) {
-		//
+		int mFlow;
+		//create a graph complete with source 0 and sink at verticesCount
+		struct graph * thisGraph = readPgmFile(imageFileName);
+		if (!thisGraph) {
+			printf("Error: invalid PGM file!\n");
+			return;
+		}
+		mFlow = maxFlow(thisGraph, 0, thisGraph->verticesCount);
+		printf("Maximum Flow: %d\n", mFlow);
+		//now we have a maximum flow, so run image segmentation to build a minimum cut
+		if (mFlow != 0) imageSegmentation(thisGraph, cutFileName);
 	}
 }
 
 int main(int argc, char *argv[]) {
 	if (argc > 2) {
-		if (argv[1][1] == 'b') {
+		if (argv[1][0] == 'b') {
 			if (argc > 4) {
 				runBFS(argv[2], atoi(argv[3]), atoi(argv[4]));
 			}
 
-		} else if (argv[1][1] == 'f') {
+		} else if (argv[1][0] == 'f') {
 			runFF(argv[2]);
 
-		} else if (argv[1][1] == 'i') {
+		} else if (argv[1][0] == 'i') {
 			runIS(argv[2], argv[3]);
 		}
 	}

@@ -104,6 +104,10 @@ void readPgmLine(char *line, int currentY, int xWidth, int **matrix) {
 	}
 }
 
+void buildImageEdges(struct graph * thisGraph, int pgmX, int pgmY, int pgmZ, int ** imageMatrix) {
+	//...
+}
+
 /**
  * Process a PGM file
  */
@@ -113,9 +117,7 @@ struct graph *readPgmFile(char *fileName) {
 	int validPgmFile = 0, pgmX = 0, pgmY = 0, pgmZ = 0;
 	int currentY = 0;
 	int** imageMatrix;
-
-	struct graph *thisGraph = createGraph(1);
-
+	struct graph *thisGraph = NULL;
 	pFile = fopen(fileName, "r");
 	if (pFile != NULL) {
 		while (fgets(line, MAX_LINE_SIZE, pFile) != NULL) {
@@ -143,15 +145,22 @@ struct graph *readPgmFile(char *fileName) {
 				} else {
 					if ((line[0] == 'P') && (line[1] == '2')) {
 						validPgmFile = 1;
+						thisGraph = createGraph(1);
 						printf("\n");
 					}
 				}
 			}
 		}
+		if (validPgmFile) buildImageEdges(thisGraph, pgmX, pgmY, pgmZ, imageMatrix);
 	}
+
 	fclose(pFile);
 
 	return thisGraph;
+}
+
+void imageSegmentation(struct graph * thisGraph, char * cutFileName) {
+	//...
 }
 
 #endif
