@@ -70,10 +70,12 @@ void runIS(char *imageFileName, char *cutFileName) {
 		int mFlow;
 		//create a graph complete with source 0 and sink at verticesCount
 		struct graph * thisGraph = readPgmFile(imageFileName);
-		if (!thisGraph) {
+		if (thisGraph == NULL) {
 			printf("Error: invalid PGM file!\n");
 			return;
 		}
+		printf("Completed graph, running max flow\n");
+		printf("%d\n", thisGraph->verticesCount);
 		mFlow = maxFlow(thisGraph, thisGraph->verticesCount-2, thisGraph->verticesCount-1);
 		printf("Maximum Flow: %d\n", mFlow);
 		//now we have a maximum flow, so run image segmentation to build a minimum cut

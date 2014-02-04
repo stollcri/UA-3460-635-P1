@@ -145,6 +145,7 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 		//add a link from the end pixel of the line to the sink
 		addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX);
 	}
+	return thisGraph;
 }
 
 /**
@@ -191,9 +192,7 @@ struct graph *readPgmFile(char *fileName) {
 		}
 		if (validPgmFile) thisGraph = buildImageEdges(pgmX, pgmY, pgmZ, imageMatrix);
 	}
-
 	fclose(pFile);
-
 	return thisGraph;
 }
 
