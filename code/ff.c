@@ -74,7 +74,7 @@ void runIS(char *imageFileName, char *cutFileName) {
 			printf("Error: invalid PGM file!\n");
 			return;
 		}
-		mFlow = maxFlow(thisGraph, 0, thisGraph->verticesCount);
+		mFlow = maxFlow(thisGraph, thisGraph->verticesCount-2, thisGraph->verticesCount-1);
 		printf("Maximum Flow: %d\n", mFlow);
 		//now we have a maximum flow, so run image segmentation to build a minimum cut
 		if (mFlow != 0) imageSegmentation(thisGraph, cutFileName);

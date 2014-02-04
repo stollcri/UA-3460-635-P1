@@ -103,8 +103,48 @@ void readPgmLine(char *line, int currentY, int xWidth, int **matrix) {
 	}
 }
 
-void buildImageEdges(struct graph * thisGraph, int pgmX, int pgmY, int pgmZ, int ** imageMatrix) {
-	//...
+//Builds an edge weight between two adjacent pixels
+//TODO: figure out a heuristic for building edge weights properly.
+//This one just sets a weight based on how different the two pixels are
+int costCheck(int pgmZ, int source, int dest) {
+	if (source > dest) return source - dest;
+	return dest-source;
+}
+
+struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
+	int x, y, cost;
+	//2 extra pixels needed for source and sink
+	struct graph * thisGraph = createGraph(pgmX*pgmY + 2);
+	for (y = 0; y<pgmY; y++) {
+		//add a link from the source pixel to the first pixel in this line
+		addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, (y*pgmX), INT_MAX);
+		for (x =0; x < pgmX; x++) {
+			//since the adjacency list is one dimensional and row-ordered, y*pgmX + x
+			//will give us the correct node
+			//we'll start with the pixel to the left of this one
+			if (x > 0) {
+				cost = costCheck(pgmZ, matrix[x][y], matrix[x-1][y]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x -1), cost);
+			}
+			//onto the pixel to the right of this one
+			if (x < pgmX-1) {
+				cost = costCheck(pgmZ, matrix[x][y], matrix[x+1][y]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x +1), cost);
+			}
+			//now the pixel below this one
+			if (y < pgmY-1) {
+				cost = costCheck(pgmZ, matrix[x][y], matrix[x][y+1]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y+1)*pgmX +x), cost);
+			}
+			//finally the pixel above this one
+			if (y > 0) {
+				cost = costCheck(pgmZ, matrix[x][y], matrix[x][y-1]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y-1)*pgmX +x), cost);
+			}
+		}
+		//add a link from the end pixel of the line to the sink
+		addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX);
+	}
 }
 
 /**
@@ -144,13 +184,12 @@ struct graph *readPgmFile(char *fileName) {
 				} else {
 					if ((line[0] == 'P') && (line[1] == '2')) {
 						validPgmFile = 1;
-						thisGraph = createGraph(1);
 						printf("\n");
 					}
 				}
 			}
 		}
-		if (validPgmFile) buildImageEdges(thisGraph, pgmX, pgmY, pgmZ, imageMatrix);
+		if (validPgmFile) thisGraph = buildImageEdges(pgmX, pgmY, pgmZ, imageMatrix);
 	}
 
 	fclose(pFile);
