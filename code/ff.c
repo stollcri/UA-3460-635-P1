@@ -74,8 +74,7 @@ void runIS(char *imageFileName, char *cutFileName) {
 			printf("Error: invalid PGM file!\n");
 			return;
 		}
-		printf("Completed graph, running max flow\n");
-		printf("%d\n", thisGraph->verticesCount);
+		//printResidualGraph(thisGraph);
 		mFlow = maxFlow(thisGraph, thisGraph->verticesCount-2, thisGraph->verticesCount-1);
 		printf("Maximum Flow: %d\n", mFlow);
 		//now we have a maximum flow, so run image segmentation to build a minimum cut

@@ -107,8 +107,8 @@ void readPgmLine(char *line, int currentY, int xWidth, int **matrix) {
 //TODO: figure out a heuristic for building edge weights properly.
 //This one just sets a weight based on how different the two pixels are
 int costCheck(int pgmZ, int source, int dest) {
-	if (source > dest) return source - dest;
-	return dest-source;
+	if (source > dest) return source - dest +10;
+	return dest-source +10;
 }
 
 struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
@@ -117,7 +117,7 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 	struct graph * thisGraph = createGraph(pgmX*pgmY + 2);
 	for (y = 0; y<pgmY; y++) {
 		//add a link from the source pixel to the first pixel in this line
-		addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, (y*pgmX), INT_MAX);
+		addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, y*pgmX, INT_MAX);
 		for (x =0; x < pgmX; x++) {
 			//since the adjacency list is one dimensional and row-ordered, y*pgmX + x
 			//will give us the correct node
