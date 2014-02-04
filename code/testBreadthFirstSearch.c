@@ -21,7 +21,7 @@ void testBFS(char * filename) {
 	addEdges(testGraph, 12, testList);
 	*/
 	struct graph *testGraph = createGraphFromFile(filename);
-	bfs(testGraph, 0, 9999);
+	bfs(testGraph, 1, 99999);
 	
 	printf("  ~~~~ testBFS complete. \n");
 }

@@ -69,8 +69,9 @@ void readTwoInts(char *line, int *x, int *y) {
  */
 int** make2dIntArray(int arraySizeX, int arraySizeY) {  
 	int** theArray;
+	int i;
 	theArray = (int**) malloc(arraySizeX*sizeof(int*));
-	for (int i = 0; i < arraySizeX; i++) {
+	for (i = 0; i < arraySizeX; i++) {
 		theArray[i] = (int*) malloc(arraySizeY*sizeof(int));
 	}
 	return theArray;
@@ -155,8 +156,11 @@ struct graph *readPgmFile(char *fileName) {
 
 #endif
 
+/*
+This needs to be commented for ff.c to compile correctly MEC 2/3/14
 int main(int argc, char *argv[]) {
 	readPgmFile(argv[1]);
 	printf("DONE \n");
 	return 0;
 }
+*/
