@@ -10,11 +10,22 @@
 
 void runBFS(char *fileName, int source, int sink) {
 	if ((strlen(fileName) != 0) && (source != sink)) {
+		//
+		// TODO: Make sure that source and sink are within the graph
+		//
 		struct graph *thisGraph = createGraphFromFile(fileName);
-		bfs(thisGraph, source, sink);
+		struct list *thisPath = bfs(thisGraph, source, sink);
 
-		// TODO: do something else here?
-		printf("BFS Complete\n");
+		struct node *currentNode = thisPath->head->next;
+		struct node *nextNode = NULL;
+
+		printf("Path: ");
+		while (currentNode) {
+	        printf("=> %d ", currentNode->vertex);
+	        nextNode = currentNode->next;
+	        currentNode = nextNode;
+	    }
+	    printf("\n");
 	}
 }
 
