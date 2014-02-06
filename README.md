@@ -23,13 +23,18 @@ Assuming you are a Unix type machine you can use the following commands. If you 
 ## Running the Program
 ### Running Breadth First Search
 
-	ff –b graph.txt source sink
+	$ ff –b graph.txt source sink
 
 ### Running Ford-Fulkerson for Max Flow / Min Cut
 
-	ff –f graph.txt
+	$ ff –f graph.txt
 
 ### Running an Image Segemntation Problem
 
-	ff –i image.pgm imageWcut.pgm
+	$ ff –i image.pgm imageWcut.pgm
+
+## Loose Ends
+To find things that are waiting to be completed:
+
+	$ grep "TODO:" *.c
 
