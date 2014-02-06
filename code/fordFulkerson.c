@@ -72,6 +72,10 @@ void residual(struct graph *thisGraph, struct list *thisPath, int flow) {
     }
 }
 
+/**
+ * Print the residual graph
+ * For debuging purposes
+ */
 void printResidualGraph(struct graph* currentGraph) {
     int v;
     for (v = 0; v < currentGraph->verticesCount; ++v) {

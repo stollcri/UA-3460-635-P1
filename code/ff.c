@@ -8,6 +8,10 @@
 #include "fordFulkerson.c"
 #include "imageSegmentation.c"
 
+/**
+ * Respond to the -b command line switch by runnning
+ * breadth first search and reporting back the path found
+ */
 void runBFS(char *fileName, int source, int sink) {
 	if ((strlen(fileName) != 0) && (source != sink)) {
 		//
@@ -29,6 +33,10 @@ void runBFS(char *fileName, int source, int sink) {
 	}
 }
 
+/**
+ * Respond to the -f command line switch by runnning
+ * Ford-Fulkerson and reporting back the max-flow
+ */
 void runFF(char *fileName) {
 	if (strlen(fileName) == 0) {
 		return;
@@ -65,6 +73,10 @@ void runFF(char *fileName) {
 	}
 }
 
+/**
+ * Respond to the -f command line switch by runnning
+ * the image segmentation routines
+ */
 void runIS(char *imageFileName, char *cutFileName) {
 	if ((strlen(imageFileName) != 0) && (strlen(cutFileName) != 0)) {
 		int mFlow;
@@ -82,6 +94,10 @@ void runIS(char *imageFileName, char *cutFileName) {
 	}
 }
 
+/**
+ * ff
+ * Run breadth first search, Ford-Fulkerson, and Image Segmentation
+ */
 int main(int argc, char *argv[]) {
 	if (argc > 2) {
 		if (argv[1][1] == 'b') {
