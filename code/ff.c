@@ -16,7 +16,7 @@ void runBFS(char *fileName, int source, int sink) {
 		struct graph *thisGraph = createGraphFromFile(fileName);
 		struct list *thisPath = bfs(thisGraph, source, sink);
 
-		struct node *currentNode = thisPath->head->next;
+		struct node *currentNode = thisPath->head;
 		struct node *nextNode = NULL;
 
 		printf("Path: ");
