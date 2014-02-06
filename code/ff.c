@@ -34,8 +34,9 @@ void runFF(char *fileName) {
 	// find the first graph node
 	thisNode = thisGraph->adjacencyList[graphStart].head;
 	while ((thisNode == NULL) && graphViable) {
+		++graphStart;
 		if (thisGraph->adjacencyList[graphStart].head) {
-			++graphStart;
+			
 			thisNode = thisGraph->adjacencyList[graphStart].head;
 		} else {
 			graphViable = 0;
@@ -43,19 +44,7 @@ void runFF(char *fileName) {
 	}
 
 	// find the last graph node
-	graphEnd = thisGraph->verticesCount - 1;
-	/*
-	graphEnd = thisGraph->verticesCount;
-	thisNode = thisGraph->adjacencyList[graphEnd].head;
-	while ((thisNode == NULL) && graphViable) {
-		if (thisGraph->adjacencyList[graphStart].head) {
-			--graphEnd;
-			thisNode = thisGraph->adjacencyList[graphEnd].head;
-		} else {
-			graphViable = 0;
-		}
-	}
-	*/
+	graphEnd = thisGraph->verticesCount - (graphStart + 1);
 
 	if (thisNode) {
 		maximumFlow = maxFlow(thisGraph, graphStart, graphEnd);
