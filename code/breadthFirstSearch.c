@@ -49,7 +49,7 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 		if (currentNode->vertex == end) {
 			if(DBGBFS) printf("END. \n");
 			sinkFound=1;
-			break;
+			break; // TODO: this violates the coding standard
 		} 
 		else if (currentNode->vertex >= thisGraph->verticesCount) {} //dead end vertex, do nothing
 		else {

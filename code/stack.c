@@ -7,6 +7,8 @@
 #define STACK_C
  #include "node.c"
  
+// TODO: Add function documentation
+
  struct stack {
 	 struct stackItem * head;
  };
