@@ -9,10 +9,8 @@ testGraph
 testBreadthFirstSearch
 testFordFulkerson
 generateGraph
-
-code/testdata/graph_ge
-code/testdata/graph_ge_convert
-code/analysisFordFulkerson
-code/ff
-
-code/imageSegmentation
+graph_ge
+graph_ge_convert
+analysisFordFulkerson
+imageSegmentation
+ff
