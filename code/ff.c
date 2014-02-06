@@ -50,7 +50,7 @@ void runFF(char *fileName) {
 		maximumFlow = maxFlow(thisGraph, graphStart, graphEnd);
 		printf("Max flow (from %d to %d) is %d\n", graphStart, graphEnd, maximumFlow);
 	} else {
-		printf("Error\n");
+		printf("Error creating or reading graph.\n");
 	}
 }
 
@@ -76,14 +76,27 @@ int main(int argc, char *argv[]) {
 		if (argv[1][1] == 'b') {
 			if (argc > 4) {
 				runBFS(argv[2], atoi(argv[3]), atoi(argv[4]));
+			} else {
+				printf("Usage (pick one):\n");
+				printf(" ff –b graph.txt source_node sink_node\n");
 			}
 
 		} else if (argv[1][1] == 'f') {
 			runFF(argv[2]);
 
 		} else if (argv[1][1] == 'i') {
-			runIS(argv[2], argv[3]);
+			if (argc > 3) {
+				runIS(argv[2], argv[3]);
+			} else {
+				printf("Usage (pick one):\n");
+				printf(" ff –i image.pgm imageWcut.pgm\n");
+			}
 		}
+	} else {
+		printf("Usage (pick one):\n");
+		printf(" ff –b graph.txt source_node sink_node\n");
+		printf(" ff –f graph.txt\n");
+		printf(" ff –i image.pgm imageWcut.pgm\n");
 	}
 
 	return 0;
