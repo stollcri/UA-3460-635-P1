@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "breadthFirstSearch.c"
+#include "../breadthFirstSearch.c"
 
 void testBFS(char * filename) {
 	/*

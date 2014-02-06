@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "graph.c"
+#include "../graph.c"
 
 void printGraph(struct graph* currentGraph) {
     for (int v = 0; v < currentGraph->verticesCount; ++v) {

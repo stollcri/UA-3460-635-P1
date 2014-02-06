@@ -6,23 +6,23 @@ ff:
 	cc -o ff ff.c
 
 test:
-	cc -o testDataStructures testDataStructures.c
-	cc -o testGraph testGraph.c
-	cc -o testBreadthFirstSearch testBreadthFirstSearch.c
-	cc -o testFordFulkerson testFordFulkerson.c
+	cc -o unittests/testDataStructures unittests/testDataStructures.c
+	cc -o unittests/testGraph unittests/testGraph.c
+	cc -o unittests/testBreadthFirstSearch unittests/testBreadthFirstSearch.c
+	cc -o unittests/testFordFulkerson unittests/testFordFulkerson.c
 
-	./testDataStructures
-	./testGraph
-	./testBreadthFirstSearch
-	./testFordFulkerson
+	./unittests/testDataStructures
+	./unittests/testGraph
+	./unittests/testBreadthFirstSearch
+	./unittests/testFordFulkerson
 
 analysis:
-	cc -o analysisFordFulkerson analysisFordFulkerson.c
+	cc -o analysis/analysisFordFulkerson analysis/analysisFordFulkerson.c
 
 clean:
-	-rm testDataStructures
-	-rm testGraph
-	-rm testBreadthFirstSearch
-	-rm testFordFulkerson
-	-rm analysisFordFulkerson
+	-rm unittests/testDataStructures
+	-rm unittests/testGraph
+	-rm unittests/testBreadthFirstSearch
+	-rm unittests/testFordFulkerson
+	-rm analysis/analysisFordFulkerson
 	-rm ff

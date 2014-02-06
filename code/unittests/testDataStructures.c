@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "dtree.c"
-#include "queue.c"
+#include "../dtree.c"
+#include "../queue.c"
 
 void testQueue() {
 	struct queue *myQueue = newQueue();

@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include <sys/time.h>
-#include "fordFulkerson.c"
+#include "../fordFulkerson.c"
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
