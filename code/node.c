@@ -16,6 +16,11 @@ struct node {
 	struct node *next;
 	int capacity; // capacity to this node
 	int flow; // flow to this node
+	int originalCapacity; // so we can find newly zeroed vertexes
+
+	// WARNING: shortcut to get min cut working quickly
+	// do not use for anything else without careful consideration
+	int altVertex;
 };
 
 /**
@@ -28,6 +33,9 @@ struct node *newNodeWithCostAndFlow(int vertex, int capacity, int flow) {
 	thisNode->next = NULL;
 	thisNode->capacity = capacity;
 	thisNode->flow = flow;
+
+	thisNode->originalCapacity = capacity;
+	thisNode->altVertex = 0;
 
 	return thisNode;
 }

@@ -21,6 +21,7 @@
 struct graph {
 	int verticesCount;
 	struct list *adjacencyList;
+	struct node *minCutEdges;
 };
 
 /**
@@ -32,6 +33,7 @@ struct graph *createGraph(int verticesCount) {
 	
 	newGraph->verticesCount = verticesCount;
 	newGraph->adjacencyList = (struct list*) malloc(sizeof(struct list) * verticesCount);
+	newGraph->minCutEdges = NULL;
 
 	for (i = 0; i < verticesCount; ++i) {
 		newGraph->adjacencyList[i].head = NULL;
