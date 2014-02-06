@@ -24,5 +24,8 @@ clean:
 	-rm unittests/testGraph
 	-rm unittests/testBreadthFirstSearch
 	-rm unittests/testFordFulkerson
+
 	-rm analysis/analysisFordFulkerson
+
+	-rm imageSegmentation
 	-rm ff
