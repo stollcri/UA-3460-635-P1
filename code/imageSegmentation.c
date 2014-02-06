@@ -80,18 +80,21 @@ int** make2dIntArray(int arraySizeX, int arraySizeY) {
 /**
  * Read in a line from a PGM file
  */
-void readPgmLine(char *line, int currentY, int xWidth, int **matrix) {
-	int nextDigit = 0, currentNumber = 0, currentX = 0;
+void readPgmLine(char *line, int *currentY, int *currentX, int xWidth, int **matrix) {
+	int nextDigit = 0, currentNumber = 0;
 	int didProcessNumber = 0;
 	int loopCount = 0;
-	while ((line[loopCount]) && (currentX < xWidth)) {
+	while ((line[loopCount])) {
 		if (isspace(line[loopCount]) || line[loopCount] == '\n') {
 			if (didProcessNumber) {
-				matrix[currentX][currentY] = currentNumber;
-
+				matrix[(*currentX)][(*currentY)] = currentNumber;
 				didProcessNumber = 0;
 				currentNumber = 0;
-				++currentX;
+				++(*currentX);
+				if ((*currentX) == xWidth) {
+					(*currentX)=0;
+					(*currentY)++;
+				}
 			}
 		} else {
 			nextDigit = line[loopCount] - '0';
@@ -105,10 +108,10 @@ void readPgmLine(char *line, int currentY, int xWidth, int **matrix) {
 
 //Builds an edge weight between two adjacent pixels
 //TODO: figure out a heuristic for building edge weights properly.
-//This one just sets a weight based on how different the two pixels are
+//This one just figures the background is easier to flow through
 int costCheck(int pgmZ, int source, int dest) {
-	if (source > dest) return source - dest +10;
-	return dest-source +10;
+	if (source > dest) return source-dest;
+	return dest-source;
 }
 
 struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
@@ -155,7 +158,7 @@ struct graph *readPgmFile(char *fileName) {
 	FILE *pFile;
 	char line[MAX_LINE_SIZE];
 	int validPgmFile = 0, pgmX = 0, pgmY = 0, pgmZ = 0;
-	int currentY = 0;
+	int currentY = 0, currentX=0;
 	int** imageMatrix;
 	struct graph *thisGraph = NULL;
 	pFile = fopen(fileName, "r");
@@ -177,8 +180,7 @@ struct graph *readPgmFile(char *fileName) {
 
 					// process image line
 					} else {
-						readPgmLine(line, currentY, pgmX, imageMatrix);
-						++currentY;
+						readPgmLine(line, &currentY, &currentX, pgmX, imageMatrix);
 					}
 
 				// look for PGM file marker
