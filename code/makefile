@@ -2,7 +2,7 @@ default: ff
 
 all: clean test analysis ff
 
-ff:
+ford:
 	cc -o ff ff.c
 
 test:
