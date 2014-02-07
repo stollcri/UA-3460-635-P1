@@ -17,7 +17,10 @@ test:
 	./unittests/testFordFulkerson
 
 emperical:
+	cc -o analysis/analysisBreadthFirstSearch analysis/analysisBreadthFirstSearch.c
 	cc -o analysis/analysisFordFulkerson analysis/analysisFordFulkerson.c
+
+	./analysis/analysisBreadthFirstSearch
 	./analysis/analysisFordFulkerson
 
 clean:
