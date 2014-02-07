@@ -21,7 +21,14 @@
 struct graph {
 	int verticesCount;
 	struct list *adjacencyList;
+
+	// added to support finding minumum cut
 	struct node *minCutEdges;
+
+	// added to support image segmentation
+	int extentX;
+	int extentY;
+	int extentZ;
 };
 
 /**
