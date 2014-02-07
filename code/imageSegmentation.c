@@ -263,9 +263,9 @@ void imageSegmentation(struct graph * thisGraph, char * cutFileName) {
 		for(int x = 0; x < pgmX; ++x){
 			//printf("%d ", newImageMatrix[x][y]);
 			if (newImageMatrix[x][y] != 0) {
-				printf("X");
+				printf("█");
 			} else {
-				printf(" ");
+				printf("░");
 			}
 		}
 		printf("\n");
