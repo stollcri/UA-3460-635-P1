@@ -22,9 +22,6 @@ struct graph {
 	int verticesCount;
 	struct list *adjacencyList;
 
-	// added to support finding minumum cut
-	struct node *minCutEdges;
-
 	// added to support image segmentation
 	int extentX;
 	int extentY;
@@ -40,7 +37,6 @@ struct graph *createGraph(int verticesCount) {
 	
 	newGraph->verticesCount = verticesCount;
 	newGraph->adjacencyList = (struct list*) malloc(sizeof(struct list) * verticesCount);
-	newGraph->minCutEdges = NULL;
 
 	for (i = 0; i < verticesCount; ++i) {
 		newGraph->adjacencyList[i].head = NULL;

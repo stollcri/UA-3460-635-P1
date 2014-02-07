@@ -90,41 +90,6 @@ void printResidualGraph(struct graph* currentGraph) {
     }
 }
 
-void storeMinCut(struct graph* currentGraph) {
-    int v;
-    struct node *minCutNode = NULL;
-    struct node *newCutNode = NULL;
-    struct node *currentCutNode = NULL;
-
-    for (v = 0; v < currentGraph->verticesCount; ++v) {
-        struct node *currentNode = currentGraph->adjacencyList[v].head;
-        
-        while (currentNode) {
-            if ((currentNode->capacity == 0) && (currentNode->originalCapacity != 0)) {
-                if(DBGFF) printf("    ~~ [%d, %d]\n", v, currentNode->vertex);
-                
-                // first loop pass
-                if (minCutNode == NULL) {
-                    newCutNode = newNode(v);
-                    newCutNode->altVertex = currentNode->vertex;
-                    
-                    minCutNode = newCutNode;
-                    currentCutNode = newCutNode;
-                } else {
-                    newCutNode = newNode(v);
-                    newCutNode->altVertex = currentNode->vertex;
-
-                    currentCutNode->next = newCutNode;
-                    currentCutNode = newCutNode;
-                }
-
-            }
-            currentNode = currentNode->next;
-        }
-    }
-    currentGraph->minCutEdges = minCutNode;
-}
-
 /**
  * Use Ford-Folkerson to calulate max-flow / min-cut
  */
@@ -153,15 +118,6 @@ int maxFlow(struct graph *thisGraph, int source, int sink) {
 		path = bfs(thisGraph, source, sink);
 		if(DBGFF) printf("DONE \n");
 	}
-
-    storeMinCut(thisGraph);
-    /* test storeMinCut is working
-    struct node *minCutNode = thisGraph->minCutEdges;
-    while (minCutNode != NULL) {
-        printf("[%d, %d]\n", minCutNode->vertex, minCutNode->altVertex);
-        minCutNode = minCutNode->next;
-    }
-	*/
 
 	return maximumFlow;
 }

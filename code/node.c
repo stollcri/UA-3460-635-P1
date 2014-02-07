@@ -18,10 +18,6 @@ struct node {
 	int flow; // flow to this node
 	int originalCapacity; // so we can find newly zeroed vertexes
 
-	// WARNING: shortcut to get min cut working quickly
-	// do not use for anything else without careful consideration
-	int altVertex;
-
 	// Only to be used for image Segmentation
 	int isVisited;
 };
@@ -38,7 +34,6 @@ struct node *newNodeWithCostAndFlow(int vertex, int capacity, int flow) {
 	thisNode->flow = flow;
 
 	thisNode->originalCapacity = capacity;
-	thisNode->altVertex = 0;
 	thisNode->isVisited = 0;
 
 	return thisNode;
