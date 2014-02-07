@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 #include "graph.c"
 
 #define MAX_LINE_SIZE 1024
@@ -116,12 +117,28 @@ int costCheck(int pgmZ, int source, int dest) {
 
 struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 	int x, y, cost;
+	int minPixel = INT_MAX, maxPixel = 0;
+	int minSpot = 0, maxSpot = 0;
+
 	//2 extra pixels needed for source and sink
 	struct graph * thisGraph = createGraph(pgmX*pgmY + 2);
 	for (y = 0; y<pgmY; y++) {
 		//add a link from the source pixel to the first pixel in this line
-		addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, y*pgmX, INT_MAX);
+		//addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, y*pgmX, INT_MAX);
 		for (x =0; x < pgmX; x++) {
+
+			// find the minimum pixel value closest to the begining
+			if (matrix[x][y] < minPixel) {
+				minPixel = matrix[x][y];
+				minSpot = x * y;
+			}
+
+			// find the maximum pixel value clostest to the end
+			if (matrix[x][y] >= maxPixel) {
+				maxPixel = matrix[x][y];
+				maxSpot = x * y;
+			}
+
 			//since the adjacency list is one dimensional and row-ordered, y*pgmX + x
 			//will give us the correct node
 			//we'll start with the pixel to the left of this one
@@ -146,8 +163,14 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 			}
 		}
 		//add a link from the end pixel of the line to the sink
-		addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX);
+		//addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX);
 	}
+
+	// source
+	addEdgeWithCost(thisGraph, thisGraph->verticesCount-2, minSpot, INT_MAX);
+	// sink
+	addEdgeWithCost(thisGraph, maxSpot, thisGraph->verticesCount-1, INT_MAX);
+
 	return thisGraph;
 }
 
@@ -206,35 +229,23 @@ struct graph *readPgmFile(char *fileName) {
 /**
  * TODO: Split this into smaller pieces
  */
-void imageSegmentation(struct graph * thisGraph, char * cutFileName) {
-	struct node *minCutEdges = thisGraph->minCutEdges;
-	int tmpEdgeCount = 0, minCutEdgeCount = 0;
+void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	int pgmX = thisGraph->extentX;
 	int pgmY = thisGraph->extentY;
 	int pgmZ = thisGraph->extentZ;
+
+	int poorMansQueue[1024];
+	int poorMansQueuePointer = 0;
+
+	int currentX = 0;
+	int currentY = 0;
+	struct node *currentNode = thisGraph->adjacencyList[source].head;
+	struct node *nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
+	// skip past source node
+	currentNode = nextNode;
+	nextNode = currentNode->next;
+
 	int **newImageMatrix;
-	int *cutEdgeArray;
-	int currentEdge = 0, currentEdgeX = 0, currentEdgeY = 0;
-
-	// count the min-cut edges
-	while (minCutEdges != NULL) {
-		minCutEdgeCount += 2;
-		//printf("%d, %d\n", minCutEdges->vertex, minCutEdges->altVertex);
-		minCutEdges = minCutEdges->next;
-	}
-	//printf("%d\n", minCutEdgeCount);
-
-	cutEdgeArray = (int*)malloc(minCutEdgeCount*sizeof(int*));
-	minCutEdges = thisGraph->minCutEdges;
-	while (minCutEdges != NULL) {
-		cutEdgeArray[tmpEdgeCount] = minCutEdges->vertex;
-		++tmpEdgeCount;
-
-		cutEdgeArray[tmpEdgeCount] = minCutEdges->altVertex;
-		++tmpEdgeCount;
-
-		minCutEdges = minCutEdges->next;
-	}
 
 	// turn all pixels off
 	newImageMatrix = make2dIntArray(pgmX, pgmY);
@@ -244,17 +255,58 @@ void imageSegmentation(struct graph * thisGraph, char * cutFileName) {
 		}
 	}
 
-	// turn cut edge pixes on
-	// TODO: fix the logic to get the other nodes in the area?
-	for (int i = 0; i < minCutEdgeCount; ++i) {
-		currentEdge = cutEdgeArray[i];
-		currentEdgeX = currentEdge % pgmX;
-		currentEdgeY = currentEdge % pgmY;
-		//printf("%d,%d : ", currentEdgeX, currentEdgeY);
+	while (currentNode) {
+        printf("=> %d (%d) ", currentNode->vertex, currentNode->capacity);
 
-		newImageMatrix[currentEdgeX][currentEdgeY] = pgmZ;
-	}
+        if ((currentNode->capacity > 0) && (currentNode->isVisited == 0)) {
+        //if (currentNode->capacity != 0) {
 
+        	if (currentNode->isVisited == 0) {
+	        	currentNode->isVisited = 1;
+	        	currentX = currentNode->vertex % pgmX;
+	        	currentY = currentNode->vertex % pgmY;
+	        	newImageMatrix[currentX][currentY] = pgmZ;
+	        	printf("> %d (%d, %d) ", currentNode->vertex, currentX, currentY);
+
+	        	// save the current node on the queue
+	        	poorMansQueue[poorMansQueuePointer] = currentNode->vertex;
+	        	++poorMansQueuePointer;
+			}
+        	
+        	// jump to the next node
+        	if (currentNode->next != NULL) {
+	        	nextNode = currentNode->next;
+	        	printf(", ");
+
+	        	while ((nextNode != NULL) && (nextNode->isVisited == 1)) {
+		        	printf("~ ");
+		        	if (nextNode->next) {
+		        		nextNode = nextNode->next;
+		        	}
+		        }
+
+		        if (nextNode != NULL) {
+		        	currentNode = thisGraph->adjacencyList[nextNode->vertex].head;
+		        	printf(".%d.", currentNode->vertex);
+		        } else {
+		        	printf("? ");
+		        }
+	        } else {
+	        	printf("! ");
+	        }
+        	
+        	printf("\n");
+	        
+        } else {
+        	// go back to the previous node
+        	--poorMansQueuePointer;
+        	currentNode = thisGraph->adjacencyList[poorMansQueue[poorMansQueuePointer]].head;
+
+        	printf("BACK \n");
+        }
+    }
+
+    /*
 	printf("P2\n");
 	printf("# Created by Crouse and Stoll\n");
 	printf("%d %d\n", pgmX, pgmY);
@@ -270,13 +322,7 @@ void imageSegmentation(struct graph * thisGraph, char * cutFileName) {
 		}
 		printf("\n");
 	}
-
-	//
-	// Left off here ( make ford && ./ff -i 2DGel.pgm tmp > tmp.pgm )
-	//
-	// Notes: did I import the file imporperly? Did Michael fix that? (It seems so on both)
-	// Need to print values instead of X / SPACE
-	// Need to output to file
+	*/
 }
 
 #endif

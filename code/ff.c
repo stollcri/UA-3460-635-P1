@@ -90,7 +90,7 @@ void runIS(char *imageFileName, char *cutFileName) {
 		mFlow = maxFlow(thisGraph, thisGraph->verticesCount-2, thisGraph->verticesCount-1);
 		//printf("Maximum Flow: %d\n", mFlow);
 		//now we have a maximum flow, so run image segmentation to build a minimum cut
-		if (mFlow != 0) imageSegmentation(thisGraph, cutFileName);
+		if (mFlow != 0) imageSegmentation(thisGraph, cutFileName, thisGraph->verticesCount-2);
 	}
 }
 
