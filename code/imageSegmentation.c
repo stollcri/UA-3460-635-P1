@@ -171,12 +171,12 @@ struct graph *readPgmFile(char *fileName) {
 					if ((pgmX == 0) && (pgmY == 0)) {
 						readTwoInts(line, &pgmX, &pgmY);
 						imageMatrix = make2dIntArray(pgmX, pgmY); 
-						printf("Extents: %d,%d \n", pgmX, pgmY);
+						//printf("Extents: %d,%d \n", pgmX, pgmY);
 
 					// get the greyscale depth
 					} else if (pgmZ == 0) {
 						readOneInt(line, &pgmZ);
-						printf("Depth: %d \n", pgmZ);
+						//printf("Depth: %d \n", pgmZ);
 
 					// process image line
 					} else {
@@ -187,19 +187,96 @@ struct graph *readPgmFile(char *fileName) {
 				} else {
 					if ((line[0] == 'P') && (line[1] == '2')) {
 						validPgmFile = 1;
-						printf("\n");
+						//printf("\n");
 					}
 				}
 			}
 		}
-		if (validPgmFile) thisGraph = buildImageEdges(pgmX, pgmY, pgmZ, imageMatrix);
+		if (validPgmFile) {
+			thisGraph = buildImageEdges(pgmX, pgmY, pgmZ, imageMatrix);
+			thisGraph->extentX = pgmX;
+			thisGraph->extentY = pgmY;
+			thisGraph->extentZ = pgmZ;
+		}
 	}
 	fclose(pFile);
 	return thisGraph;
 }
 
+/**
+ * TODO: Split this into smaller pieces
+ */
 void imageSegmentation(struct graph * thisGraph, char * cutFileName) {
-	//...
+	struct node *minCutEdges = thisGraph->minCutEdges;
+	int tmpEdgeCount = 0, minCutEdgeCount = 0;
+	int pgmX = thisGraph->extentX;
+	int pgmY = thisGraph->extentY;
+	int pgmZ = thisGraph->extentZ;
+	int **newImageMatrix;
+	int *cutEdgeArray;
+	int currentEdge = 0, currentEdgeX = 0, currentEdgeY = 0;
+
+	// count the min-cut edges
+	while (minCutEdges != NULL) {
+		minCutEdgeCount += 2;
+		//printf("%d, %d\n", minCutEdges->vertex, minCutEdges->altVertex);
+		minCutEdges = minCutEdges->next;
+	}
+	//printf("%d\n", minCutEdgeCount);
+
+	cutEdgeArray = (int*)malloc(minCutEdgeCount*sizeof(int*));
+	minCutEdges = thisGraph->minCutEdges;
+	while (minCutEdges != NULL) {
+		cutEdgeArray[tmpEdgeCount] = minCutEdges->vertex;
+		++tmpEdgeCount;
+
+		cutEdgeArray[tmpEdgeCount] = minCutEdges->altVertex;
+		++tmpEdgeCount;
+
+		minCutEdges = minCutEdges->next;
+	}
+
+	// turn all pixels off
+	newImageMatrix = make2dIntArray(pgmX, pgmY);
+	for (int y = 0; y < pgmY; ++y){
+		for (int x = 0; x < pgmX; ++x){
+			newImageMatrix[x][y] = 0;
+		}
+	}
+
+	// turn cut edge pixes on
+	// TODO: fix the logic to get the other nodes in the area?
+	for (int i = 0; i < minCutEdgeCount; ++i) {
+		currentEdge = cutEdgeArray[i];
+		currentEdgeX = currentEdge % pgmX;
+		currentEdgeY = currentEdge % pgmY;
+		//printf("%d,%d : ", currentEdgeX, currentEdgeY);
+
+		newImageMatrix[currentEdgeX][currentEdgeY] = pgmZ;
+	}
+
+	printf("P2\n");
+	printf("# Created by Crouse and Stoll\n");
+	printf("%d %d\n", pgmX, pgmY);
+	printf("%d\n", pgmZ);
+	for (int y = 0; y < pgmY; ++y){
+		for(int x = 0; x < pgmX; ++x){
+			//printf("%d ", newImageMatrix[x][y]);
+			if (newImageMatrix[x][y] != 0) {
+				printf("X");
+			} else {
+				printf(" ");
+			}
+		}
+		printf("\n");
+	}
+
+	//
+	// Left off here ( make ford && ./ff -i 2DGel.pgm tmp > tmp.pgm )
+	//
+	// Notes: did I import the file imporperly? Did Michael fix that? (It seems so on both)
+	// Need to print values instead of X / SPACE
+	// Need to output to file
 }
 
 #endif
