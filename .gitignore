@@ -4,6 +4,7 @@ _Store
 a.out
 *.exe
 aff.numbers
+bfs.numbers
 
 testDataStructures
 testGraph
@@ -13,5 +14,6 @@ generateGraph
 graph_ge
 graph_ge_convert
 analysisFordFulkerson
+analysisBreadthFirstSearch
 imageSegmentation
 ff
