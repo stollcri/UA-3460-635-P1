@@ -228,6 +228,10 @@ struct graph *readPgmFile(char *fileName) {
 
 /**
  * TODO: Split this into smaller pieces
+ *
+ * Perform DEPTH Firts search from the source, stop when a zero capacity residual node is found
+ * (this is the min-cut boundary). Every reachable node should be marked (black), and every
+ * unreachable node should remain un-marked (white).
  */
 void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	int pgmX = thisGraph->extentX;
@@ -276,7 +280,6 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
         	// jump to the next node
         	if (currentNode->next != NULL) {
 	        	nextNode = currentNode->next;
-	        	printf(", ");
 
 	        	while ((nextNode != NULL) && (nextNode->isVisited == 1)) {
 		        	printf("~ ");
@@ -288,11 +291,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 		        if (nextNode != NULL) {
 		        	currentNode = thisGraph->adjacencyList[nextNode->vertex].head;
 		        	printf(".%d.", currentNode->vertex);
-		        } else {
-		        	printf("? ");
 		        }
-	        } else {
-	        	printf("! ");
 	        }
         	
         	printf("\n");
@@ -305,8 +304,9 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
         	printf("BACK \n");
         }
     }
+    printf("\n\n");
 
-    /*
+    /**/
 	printf("P2\n");
 	printf("# Created by Crouse and Stoll\n");
 	printf("%d %d\n", pgmX, pgmY);
@@ -322,7 +322,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 		}
 		printf("\n");
 	}
-	*/
+	/**/
 }
 
 #endif
