@@ -16,8 +16,9 @@ test:
 	./unittests/testBreadthFirstSearch
 	./unittests/testFordFulkerson
 
-analysis:
+emperical:
 	cc -o analysis/analysisFordFulkerson analysis/analysisFordFulkerson.c
+	./analysis/analysisFordFulkerson
 
 clean:
 	-rm unittests/testDataStructures

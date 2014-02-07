@@ -3,6 +3,7 @@ _Store
 
 a.out
 *.exe
+aff.numbers
 
 testDataStructures
 testGraph
