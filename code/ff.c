@@ -1,10 +1,42 @@
+/*  	
+Program______________________________
+
+Programmer _________________________________
+
+Academic Integrity Pledge
+
+- All source code and documentation used in my program is either
+  my original work, or was derived, by me, from the source
+  code published in the textbook for this course or presented in class.
+  Any source code in this project that is derived from code published 
+  elsewhere is documented as such so the original author receives due 
+  credit.
+
+- I have not used source code obtained from another student,
+  or any other unauthorized source, either modified or unmodified.
+  I have not helped another student write their program by providing
+  a printed or electronic copy of my solution.
+
+- I have not discussed coding details about this project with anyone
+  other than my instructor. I understand that I may discuss the
+  concepts of this program with other students, and that another
+  student may help me debug my program. However, the responsibility
+  to write each program belongs solely to the program's author.
+
+- I have violated neither the spirit nor letter of these restrictions.
+
+
+_______________________________________  Date___________________
+Signature of programmer
+*/
+
 /**
  * Run Breadth First Search, Ford-Fullkerson, and Image Segmentation
  */
 
 #include <stdio.h>
 #include <string.h>
-//#include "breadthFirstSearch.c" <= TODO: no include guards
+#include "breadthFirstSearch.c"
 #include "fordFulkerson.c"
 #include "imageSegmentation.c"
 

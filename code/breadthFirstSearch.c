@@ -3,7 +3,8 @@
  * Christopher Stoll, 2014
  * Last updated by Michael Crouse, 2/1/14
  */
-
+#ifndef BFS
+#define BFS
 #include <stdlib.h>
 #include "linkedList.c"
 #include "graph.c"
@@ -42,14 +43,14 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 	seen[start] = 1;
 	sinkFound=0;
 	// while there are items in the queue
-	while ((currentBranch = dequeue(bfsQueue)) != NULL) {
+	while (sinkFound != 1 && (currentBranch = dequeue(bfsQueue)) != NULL) {
 		// if we have found the target
 		currentNode = currentBranch->data;
 		if(DBGBFS) printf("OUTER WHILE... %d \n", currentNode->vertex);
 		if (currentNode->vertex == end) {
 			if(DBGBFS) printf("END. \n");
 			sinkFound=1;
-			break; // TODO: this violates the coding standard
+			//break;
 		} 
 		else if (currentNode->vertex >= thisGraph->verticesCount) {} //dead end vertex, do nothing
 		else {
@@ -107,4 +108,4 @@ struct list *bfs(struct graph* thisGraph, int start, int end) {
 	free(seen);
 	return bfsPath;
 }
-
+#endif
