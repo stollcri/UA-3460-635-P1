@@ -130,13 +130,13 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 			// find the minimum pixel value closest to the begining
 			if (matrix[x][y] < minPixel) {
 				minPixel = matrix[x][y];
-				minSpot = x * y;
+				minSpot = pgmX * y + x;
 			}
 
 			// find the maximum pixel value clostest to the end
 			if (matrix[x][y] >= maxPixel) {
 				maxPixel = matrix[x][y];
-				maxSpot = x * y;
+				maxSpot = pgmX * y + x;
 			}
 
 			//since the adjacency list is one dimensional and row-ordered, y*pgmX + x
@@ -165,7 +165,7 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 		//add a link from the end pixel of the line to the sink
 		//addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX);
 	}
-
+	printf("minSpot %d(%d), maxSpot %d(%d)\n", minSpot, minPixel, maxSpot, maxPixel);
 	// source
 	addEdgeWithCost(thisGraph, thisGraph->verticesCount-2, minSpot, INT_MAX);
 	// sink
@@ -304,7 +304,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	        	// save the current node on the queue
 	        	poorMansQueue[poorMansQueuePointer] = currentNode->vertex;
 	        	++poorMansQueuePointer;
-			}
+		}
         	
         	// jump to the next node
 
