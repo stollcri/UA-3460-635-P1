@@ -240,6 +240,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 
 	int poorMansQueue[1024];
 	int poorMansQueuePointer = 0;
+	int x, y;
 
 	int currentX = 0;
 	int currentY = 0;
@@ -253,8 +254,8 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 
 	// turn all pixels off
 	newImageMatrix = make2dIntArray(pgmX, pgmY);
-	for (int y = 0; y < pgmY; ++y){
-		for (int x = 0; x < pgmX; ++x){
+	for (y = 0; y < pgmY; ++y){
+		for (x = 0; x < pgmX; ++x){
 			newImageMatrix[x][y] = 0;
 		}
 	}
@@ -299,9 +300,12 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
         } else {
         	// go back to the previous node
         	--poorMansQueuePointer;
-        	currentNode = thisGraph->adjacencyList[poorMansQueue[poorMansQueuePointer]].head;
-
-        	printf("BACK \n");
+		if (poorMansQueuePointer < 0) {
+			currentNode=NULL;
+		}else {
+        	       currentNode = thisGraph->adjacencyList[poorMansQueue[poorMansQueuePointer]].head;
+        	       printf("BACK \n");
+		}
         }
     }
     printf("\n\n");
@@ -311,13 +315,15 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	printf("# Created by Crouse and Stoll\n");
 	printf("%d %d\n", pgmX, pgmY);
 	printf("%d\n", pgmZ);
-	for (int y = 0; y < pgmY; ++y){
-		for(int x = 0; x < pgmX; ++x){
+	for (y = 0; y < pgmY; ++y){
+		for(x = 0; x < pgmX; ++x){
 			//printf("%d ", newImageMatrix[x][y]);
 			if (newImageMatrix[x][y] != 0) {
 				printf("█");
+				//printf("B");
 			} else {
 				printf("░");
+				//printf("W");
 			}
 		}
 		printf("\n");
