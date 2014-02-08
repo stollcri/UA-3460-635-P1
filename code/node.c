@@ -17,9 +17,8 @@ struct node {
 	int capacity; // capacity to this node
 	int flow; // flow to this node
 	int originalCapacity; // so we can find newly zeroed vertexes
-
 	// Only to be used for image Segmentation
-	int isVisited;
+	int zValue;
 };
 
 /**
@@ -32,10 +31,8 @@ struct node *newNodeWithCostAndFlow(int vertex, int capacity, int flow) {
 	thisNode->next = NULL;
 	thisNode->capacity = capacity;
 	thisNode->flow = flow;
-
 	thisNode->originalCapacity = capacity;
-	thisNode->isVisited = 0;
-
+	thisNode->zValue = 0;
 	return thisNode;
 }
 

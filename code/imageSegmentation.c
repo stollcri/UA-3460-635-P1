@@ -126,7 +126,7 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 	struct graph * thisGraph = createGraph(pgmX*pgmY + 2);
 	for (y = 0; y<pgmY; y++) {
 		//add a link from the source pixel to the first pixel in this line
-		//addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, y*pgmX, INT_MAX);
+		//addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, y*pgmX, INT_MAX, pgmZ);
 		for (x =0; x < pgmX; x++) {
 
 			// find the minimum pixel value closest to the begining
@@ -146,32 +146,32 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 			//we'll start with the pixel to the left of this one
 			if (x > 0) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x-1][y]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x -1), cost);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x -1), cost, matrix[x-1][y]);
 			}
 			//onto the pixel to the right of this one
 			if (x < pgmX-1) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x+1][y]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x +1), cost);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x +1), cost, matrix[x+1][y]);
 			}
 			//now the pixel below this one
 			if (y < pgmY-1) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x][y+1]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y+1)*pgmX +x), cost);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y+1)*pgmX +x), cost, matrix[x][y+1]);
 			}
 			//finally the pixel above this one
 			if (y > 0) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x][y-1]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y-1)*pgmX +x), cost);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y-1)*pgmX +x), cost, matrix[x][y-1]);
 			}
 		}
 		//add a link from the end pixel of the line to the sink
-		//addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX);
+		//addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX, pgmZ);
 	}
 	//printf("minSpot %d(%d), maxSpot %d(%d)\n", minSpot, minPixel, maxSpot, maxPixel);
 	// source
-	addEdgeWithCost(thisGraph, thisGraph->verticesCount-2, minSpot, INT_MAX);
+	addEdgeWithCost(thisGraph, thisGraph->verticesCount-2, minSpot, INT_MAX, pgmZ);
 	// sink
-	addEdgeWithCost(thisGraph, maxSpot, thisGraph->verticesCount-1, INT_MAX);
+	addEdgeWithCost(thisGraph, maxSpot, thisGraph->verticesCount-1, INT_MAX, pgmZ);
 
 	return thisGraph;
 }
@@ -244,11 +244,7 @@ void outputImage(int **matrix, char *cutFileName, int pgmX, int pgmY, int pgmZ) 
 		fprintf(out, "%d\n", pgmZ);
 		for (y=0; y < pgmY; ++y) {
 			for (x=0; x < pgmX; ++x) {
-				if (matrix[x][y] != 0) {
-					fprintf(out, "%d ", pgmZ);
-				} else {
-					fprintf(out, "%d ", 0);
-				}
+				fprintf(out, "%d ", matrix[x][y]);
 			}
 			fprintf(out, "\n");
 		}
@@ -301,7 +297,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 			//we are at a previously univisited node that isn't cut off here.
 			//we'll enqueue all nearby nodes and work on them next
 			if(DBGIS) printf("Capacity remains here, continuing\n");
-			newImageMatrix[currentX][currentY] = 1;
+			newImageMatrix[currentX][currentY] = currentNode->zValue;
 			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
 			while (nextNode != NULL) {
 				//is the node we're going to look at alrady visited?

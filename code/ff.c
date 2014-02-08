@@ -74,7 +74,7 @@ void runFF(char *fileName) {
 }
 
 /**
- * Respond to the -f command line switch by runnning
+ * Respond to the -i command line switch by runnning
  * the image segmentation routines
  */
 void runIS(char *imageFileName, char *cutFileName) {

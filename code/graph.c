@@ -49,7 +49,7 @@ struct graph *createGraph(int verticesCount) {
 /**
  * Add an edge to a graph with a cost
  */
-void addEdgeWithCost(struct graph *thisGraph, int source, int sink, int cost) {
+void addEdgeWithCost(struct graph *thisGraph, int source, int sink, int cost, int Z) {
 	/*
 	 * TODO: add bounds checking
 	 *       adding a backlink from 12 to 7 results in a
@@ -61,6 +61,7 @@ void addEdgeWithCost(struct graph *thisGraph, int source, int sink, int cost) {
 	 */
 	struct node *thisNode = newNodeWithCost(sink, cost);
 	thisNode->next = thisGraph->adjacencyList[source].head;
+	thisNode->zValue = Z;
 	thisGraph->adjacencyList[source].head = thisNode;
 
 	/* this code adds a link back from the sink to the source
@@ -74,7 +75,7 @@ void addEdgeWithCost(struct graph *thisGraph, int source, int sink, int cost) {
  * Add an edge to a graph
  */
 void addEdge(struct graph *thisGraph, int source, int sink) {
-	addEdgeWithCost(thisGraph, source, sink, 0);
+	addEdgeWithCost(thisGraph, source, sink, 0, 0);
 }
 
 /**
@@ -83,7 +84,7 @@ void addEdge(struct graph *thisGraph, int source, int sink) {
 void addEdgesWithCost(struct graph *thisGraph, int listLength, int adjacencyList[][3]) {
 	int i;
 	for (i = 0; i < listLength; ++i) {
-		addEdgeWithCost(thisGraph, adjacencyList[i][0], adjacencyList[i][1], adjacencyList[i][2]);
+		addEdgeWithCost(thisGraph, adjacencyList[i][0], adjacencyList[i][1], adjacencyList[i][2], 0);
 	}
 }
 
@@ -115,7 +116,7 @@ void addEdgesFromLine(struct graph *thisGraph, char *line, int startVertex) {
 				vertex = currentNumber;
 			} else if (cost == INT_MAX) {
 				cost = currentNumber;
-				addEdgeWithCost(thisGraph, startVertex, vertex, cost);
+				addEdgeWithCost(thisGraph, startVertex, vertex, cost, 0);
 
 				vertex = INT_MAX;
 				cost = INT_MAX;
