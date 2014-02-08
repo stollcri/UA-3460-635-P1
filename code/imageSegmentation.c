@@ -12,6 +12,7 @@
 #include "graph.c"
 #include "isQueue.c"
 
+#define DBGIS 0
 #define MAX_LINE_SIZE 1024
 
 /**
@@ -166,7 +167,7 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 		//add a link from the end pixel of the line to the sink
 		//addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX);
 	}
-	printf("minSpot %d(%d), maxSpot %d(%d)\n", minSpot, minPixel, maxSpot, maxPixel);
+	//printf("minSpot %d(%d), maxSpot %d(%d)\n", minSpot, minPixel, maxSpot, maxPixel);
 	// source
 	addEdgeWithCost(thisGraph, thisGraph->verticesCount-2, minSpot, INT_MAX);
 	// sink
@@ -292,22 +293,22 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	while ((currentNode = isDequeue(visitQueue)) != NULL) {
 		currentX = currentNode->vertex % pgmX;
 		currentY = currentNode->vertex / pgmX;
-		printf("At vertex %d, position %d,%d -> ", currentNode->vertex, currentX, currentY);
+		if(DBGIS) printf("At vertex %d, position %d,%d -> ", currentNode->vertex, currentX, currentY);
 		//is this a node that had capacity and now has none?
-		if ((currentNode->capacity == 0) && (currentNode->originalCapacity != 0)) {
-			printf("max flow through this node, marking \n");
-			newImageMatrix[currentX][currentY] = pgmZ;
+		if (currentNode->capacity == 0) {
+			if(DBGIS) printf("No remaining capacity at this node\n");
 		} else {
 			//we are at a previously univisited node that isn't cut off here.
 			//we'll enqueue all nearby nodes and work on them next
-			printf("not at max flow, continuing\n");
+			if(DBGIS) printf("Capacity remains here, continuing\n");
+			newImageMatrix[currentX][currentY] = 1;
 			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
 			while (nextNode != NULL) {
 				//is the node we're going to look at alrady visited?
-				if ((seen[nextNode->vertex] == 0) && nextNode->originalCapacity != 0) {
+				if (seen[nextNode->vertex] == 0 && nextNode->flow != 0) {
 					isEnqueue(visitQueue, nextNode);
 					seen[nextNode->vertex] = 1;
-					printf("Enqueueing vertex %d\n", nextNode->vertex, currentX, currentY);
+					if(DBGIS) printf("Enqueueing vertex %d\n", nextNode->vertex, currentX, currentY);
 				}
 				nextNode = nextNode->next;
 			}
