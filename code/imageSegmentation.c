@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include "graph.c"
+#include "isQueue.c"
 
 #define MAX_LINE_SIZE 1024
 
@@ -265,21 +266,20 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	int pgmX = thisGraph->extentX;
 	int pgmY = thisGraph->extentY;
 	int pgmZ = thisGraph->extentZ;
-
-	int poorMansQueue[1024];
-	int poorMansQueuePointer = 0;
 	int x, y;
-
 	int currentX = 0;
 	int currentY = 0;
 	struct node *currentNode = thisGraph->adjacencyList[source].head;
 	struct node *nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
+	struct isQueue * visitQueue = newISQueue();
 	// skip past source node
 	currentNode = nextNode;
 	nextNode = currentNode->next;
-
 	int **newImageMatrix;
-
+	int *seen = (int *) malloc(sizeof(int) * thisGraph->verticesCount);
+	for (x=0; x < thisGraph->verticesCount; ++x) {
+		seen[x] = 0;
+	}
 	// turn all pixels off
 	newImageMatrix = make2dIntArray(pgmX, pgmY);
 	for (y = 0; y < pgmY; ++y){
@@ -287,77 +287,32 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 			newImageMatrix[x][y] = 0;
 		}
 	}
-
-	while (currentNode) {
-        printf("=> %d (%d) ", currentNode->vertex, currentNode->capacity);
-
-        if ((currentNode->capacity > 0) && (currentNode->isVisited == 0)) {
-        //if (currentNode->capacity != 0) {
-
-        	if (currentNode->isVisited == 0) {
-	        	currentNode->isVisited = 1;
-	        	currentY = currentNode->vertex / pgmX;
-	        	currentX = currentNode->vertex % pgmX;
-	        	newImageMatrix[currentX][currentY] = pgmZ;
-	        	printf("> %d (%d, %d) ", currentNode->vertex, currentX, currentY);
-
-	        	// save the current node on the queue
-	        	poorMansQueue[poorMansQueuePointer] = currentNode->vertex;
-	        	++poorMansQueuePointer;
+	isEnqueue(visitQueue, currentNode);
+	seen[currentNode->vertex] = 1;
+	while ((currentNode = isDequeue(visitQueue)) != NULL) {
+		currentX = currentNode->vertex % pgmX;
+		currentY = currentNode->vertex / pgmX;
+		printf("At vertex %d, position %d,%d -> ", currentNode->vertex, currentX, currentY);
+		//is this a node that had capacity and now has none?
+		if ((currentNode->capacity == 0) && (currentNode->originalCapacity != 0)) {
+			printf("max flow through this node, marking \n");
+			newImageMatrix[currentX][currentY] = pgmZ;
+		} else {
+			//we are at a previously univisited node that isn't cut off here.
+			//we'll enqueue all nearby nodes and work on them next
+			printf("not at max flow, continuing\n");
+			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
+			while (nextNode != NULL) {
+				//is the node we're going to look at alrady visited?
+				if ((seen[nextNode->vertex] == 0) && nextNode->originalCapacity != 0) {
+					isEnqueue(visitQueue, nextNode);
+					seen[nextNode->vertex] = 1;
+					printf("Enqueueing vertex %d\n", nextNode->vertex, currentX, currentY);
+				}
+				nextNode = nextNode->next;
+			}
 		}
-        	
-        	// jump to the next node
-
-        	if (currentNode->next != NULL) {
-	        	nextNode = currentNode->next;
-
-	        	while ((nextNode != NULL) && (nextNode->isVisited == 1)) {
-		        	printf("~ ");
-		        	if (nextNode->next) {
-		        		nextNode = nextNode->next;
-		        	}
-		        }
-
-		        if (nextNode != NULL) {
-		        	currentNode = thisGraph->adjacencyList[nextNode->vertex].head;
-		        	printf(".%d.", currentNode->vertex);
-		        }
-	        }
-        	
-        	printf("\n");
-	        
-        } else {
-        	// go back to the previous node
-        	--poorMansQueuePointer;
-		if (poorMansQueuePointer < 0) {
-			currentNode=NULL;
-		}else {
-        	       currentNode = thisGraph->adjacencyList[poorMansQueue[poorMansQueuePointer]].head;
-        	       printf("BACK \n");
-		}
-        }
-    }
-    printf("\n\n");
-
-       /*
-	*printf("P2\n");
-	*printf("# Created by Crouse and Stoll\n");
-	*printf("%d %d\n", pgmX, pgmY);
-	*printf("%d\n", pgmZ);
-	*for (y = 0; y < pgmY; ++y){
-	*	for(x = 0; x < pgmX; ++x){
-	*		//printf("%d ", newImageMatrix[x][y]);
-	*		if (newImageMatrix[x][y] != 0) {
-	*			printf("█");
-	*			//printf("B");
-	*		} else {
-	*			printf("░");
-	*			//printf("W");
-	*		}
-	*	}
-	*	printf("\n");
-	*}
-	*/
+	}
 	outputImage(newImageMatrix, cutFileName, pgmX, pgmY, pgmZ);
 }
 
