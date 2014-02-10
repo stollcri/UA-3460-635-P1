@@ -5,6 +5,7 @@ a.out
 *.exe
 aff.numbers
 bfs.numbers
+Report.pages
 
 testDataStructures
 testGraph
