@@ -115,16 +115,17 @@ void readPgmLine(char *line, int *currentY, int *currentX, int xWidth, int **mat
 int costCheck(int pgmZ, int source, int dest) {
 	int result = 0;
 	if (source > dest) {
-		result = (source-dest);
+		result = pgmZ - (source-dest);
 	} else {
-		result = (dest-source);
+		result = pgmZ - (dest-source);
 	}
+	printf("%d\n", result);
 	return result;
 }
 
 struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 	int x, y, cost;
-	int minPixel = pgmZ / 2, maxPixel = pgmZ / 2;
+	int minPixel = pgmZ / 4, maxPixel = pgmZ / 4 * 3;
 	int minSpot = 0, maxSpot = 0;
 
 	struct graph * thisGraph = createGraph(pgmX*pgmY + 2);
