@@ -10,7 +10,11 @@ To apply a flow network to segmenting an image, each pixel in the image was view
 
 For the purposes of this project the goal of image segmentation was to seperate the background from the foreground of the greyscale image and either white-out or black-out the background of the image. In order to find the boundary between the foreground and the background we searched for the line of highest contrast, this is where the z-dimension differences are the highest; the z-dimension difference between a white pixel, with a value of 255, and a black pixel, with a vlaue of 0, is 255. That line of maximum contrast should corespond to the the minimum cut. According to the max-flow min-cut theorum, the maximum flow from the source to the sink of a flow network coresponds with the minimum cut required to stop the flow from the source to the sink. So, after the Ford-Fulkerson algorithm is run we can berform another breadth first search on the residual graph from the source out to where the residual cpacity is zero. This defines an area that should corespond to the background of the image.
 
-We started by implementing breadth first search. We decided to use C, so we had to create node and graph structures as well as functions for handling queues and stacks. Once the breadth first search was implemented we ran some analysis to verify that it was performing as expected. We expected that in the worst case breadth first search should run in (|E| + |V|) time. The chart below show the results of our emperical analysis for a number of various sized graphs. Each graph was run 25 times, outliers were excluded, then the times were averaged. The (|E| + |V|) values were scaled down so that the initial points roughly corespond; this is to make the asyptotes easier to compare. The time taken to run each graph does not form a smooth asymtote, this is due to differences in the graph desnisties. We used different densities to check a wider range of operating parameters.
+We started by implementing breadth first search. We decided to use C, so we had to create node and graph structures as well as functions for handling queues and stacks. The graph was implemented using an adjacency matrix to reduce memory complexity; this made the programming slightly more chalanging.
+
+Once the breadth first search was implemented we ran some analysis to verify that it was performing as expected. We expected that in the worst case breadth first search should run in (|E| + |V|) time. The chart below show the results of our emperical analysis for a number of various sized graphs. Each graph was run 25 times, outliers were excluded, then the times were averaged. The (|E| + |V|) values were scaled down so that the initial points roughly corespond; this is to make the asyptotes easier to compare. The time taken to run each graph does not form a smooth asymtote, this is due to differences in the graph desnisties. We used different densities to check a wider range of operating parameters.
+
+It is worth noting that, even with very large graphs, our C implementation of the breadth first search, as well as Ford-Fulkerson, ran so quickly that we had to measure run-times in microsoeconds. On these small time scales it seems that the impact of operating system optimizations have a large impact upon run-times. We ran our analysis program multiple times, and occasionaly a graph would report taking orders of magnitudes longer to run. We used averages to counter this, but the operating system overhead constants seem to have an outsized impact at this time scale.
 
 ![Performance Graph A](./code/analysis/BreadthFirstSearch-small.png)
 
@@ -46,3 +50,26 @@ We started by implementing breadth first search. We decided to use C, so we had 
 | 30000 | 140000 | 6800 | 1700 | 1168 |
 | 40000 | 160000 | 8000 | 2000 | 528 |
 | 30000 | 280000 | 12400 | 3100 | 4335 |
+
+Once the breath first search was working as expected we implemented the Ford-Fulkerson algorithm. Analysis shows that our Ford-Fulkerson performs in O(Ef), the number of edges times the maximum flow, as expected. Perhaps due to the operating system overhead constants mentioned above, the algorith performs realtively better on larger graphs or graphs with larger maximum flows.
+
+![Performance Graph B](./code/analysis/Ford-Fulkerson.png)
+
+| V | E | flow | O(Ef) / 1000 | microseconds |
+|---|---|------|--------------|--------------|
+| 1024 | 2048 | 8 | 16.384 | 39 |
+| 2048 | 4096 | 19 | 77.824 | 92 |
+| 1024 | 4096 | 26 | 106.496 | 306 |
+| 256 | 1024 | 128 | 131.072 | 401 |
+| 512 | 2048 | 99 | 202.752 | 401 |
+| 2048 | 8192 | 27 | 221.184 | 886 |
+| 256 | 2048 | 360 | 737.28 | 1096 |
+| 2048 | 9999 | 145 | 1449.855 | 1203 |
+| 512 | 4096 | 421 | 1724.416 | 2618 |
+| 1024 | 8192 | 311 | 2547.712 | 2058 |
+| 256 | 4096 | 851 | 3485.696 | 4056 |
+| 512 | 8192 | 701 | 5742.592 | 5700 |
+| 10000 | 40000 | 167 | 6680 | 1925 |
+| 40000 | 160000 | 60 | 9600 | 2745 |
+| 30000 | 140000 | 104 | 14560 | 5522 |
+| 256 | 8192 | 2367 | 19390.464 | 9198 |
