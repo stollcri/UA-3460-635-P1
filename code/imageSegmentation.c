@@ -127,11 +127,10 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 	int minPixel = pgmZ / 2, maxPixel = pgmZ / 2;
 	int minSpot = 0, maxSpot = 0;
 
-	//2 extra pixels needed for source and sink
 	struct graph * thisGraph = createGraph(pgmX*pgmY + 2);
 	for (y = 0; y<pgmY; y++) {
-		//add a link from the source pixel to the first pixel in this line
 		for (x =0; x < pgmX; x++) {
+
 			// find the minimum pixel value closest to the begining
 			if (matrix[x][y] <= minPixel) {
 				minSpot = pgmX * y + x;
@@ -143,7 +142,7 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 				maxSpot = pgmX * y + x;
 				addEdgeWithCost(thisGraph, maxSpot, thisGraph->verticesCount-1, INT_MAX, pgmZ);
 			}
-			thisGraph->adjacencyList[y*pgmX +x].self->zValue = matrix[x][y];
+
 			//since the adjacency list is one dimensional and row-ordered, y*pgmX + x
 			//will give us the correct node
 			//we'll start with the pixel to the left of this one
@@ -273,7 +272,6 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	newImageMatrix = make2dIntArray(pgmX, pgmY);
 	for (y = 0; y < pgmY; ++y){
 		for (x = 0; x < pgmX; ++x){
-			//newImageMatrix[x][y] = thisGraph->adjacencyList[y*pgmX +x].self->zValue;
 			newImageMatrix[x][y] = pgmZ;
 		}
 	}
@@ -291,9 +289,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 		currentX = currentNode->vertex % pgmX;
 		currentY = currentNode->vertex / pgmX;
 		//is this a node that had capacity and now has none?
-		if (currentNode->capacity == 0) {
-			//if(DBGIS) printf("No remaining capacity at this node\n");
-		} else {
+		if (currentNode->capacity != 0) {
 			//we are at a previously univisited node that isn't cut off here.
 			//we'll enqueue all nearby nodes and work on them next
 			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
