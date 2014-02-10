@@ -124,7 +124,7 @@ int costCheck(int pgmZ, int source, int dest) {
 
 struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 	int x, y, cost;
-	int minPixel = 32, maxPixel = 240;
+	int minPixel = pgmZ / 2, maxPixel = pgmZ / 2;
 	int minSpot = 0, maxSpot = 0;
 
 	//2 extra pixels needed for source and sink
@@ -297,11 +297,8 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 			//we are at a previously univisited node that isn't cut off here.
 			//we'll enqueue all nearby nodes and work on them next
 			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
-			if (nextNode->capacity != 0) {
-				//newImageMatrix[currentX][currentY] = pgmZ;
-				newImageMatrix[currentX][currentY] = currentNode->zValue;
-			} 
-			while (nextNode != NULL) {
+			newImageMatrix[currentX][currentY] = nextNode->zValue;
+			while ((nextNode != NULL) && (nextNode->capacity != 0)) {
 				//is the node we're going to look at alrady visited?
 				if (seen[nextNode->vertex] == 0) {
 					isEnqueue(visitQueue, nextNode);
