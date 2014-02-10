@@ -298,6 +298,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 			//we'll enqueue all nearby nodes and work on them next
 			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
 			if (nextNode->capacity != 0) {
+				//newImageMatrix[currentX][currentY] = pgmZ;
 				newImageMatrix[currentX][currentY] = currentNode->zValue;
 			} 
 			while (nextNode != NULL) {
