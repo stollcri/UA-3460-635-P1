@@ -113,32 +113,35 @@ void readPgmLine(char *line, int *currentY, int *currentX, int xWidth, int **mat
 //TODO: figure out a heuristic for building edge weights properly.
 //This one just figures the background is easier to flow through
 int costCheck(int pgmZ, int source, int dest) {
-	if (source > dest) return source-dest;
-	return dest-source;
+	int result = 0;
+	if (source > dest) {
+		result = (source-dest);
+	} else {
+		result = (dest-source);
+	}
+	return result;
 }
 
 struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 	int x, y, cost;
-	int minPixel = INT_MAX, maxPixel = 0;
+	int minPixel = 32, maxPixel = 240;
 	int minSpot = 0, maxSpot = 0;
 
 	//2 extra pixels needed for source and sink
 	struct graph * thisGraph = createGraph(pgmX*pgmY + 2);
 	for (y = 0; y<pgmY; y++) {
 		//add a link from the source pixel to the first pixel in this line
-		//addEdgeWithCost(thisGraph, thisGraph->verticesCount -2, y*pgmX, INT_MAX, pgmZ);
 		for (x =0; x < pgmX; x++) {
-
 			// find the minimum pixel value closest to the begining
-			if (matrix[x][y] < minPixel) {
-				minPixel = matrix[x][y];
+			if (matrix[x][y] <= minPixel) {
 				minSpot = pgmX * y + x;
+				addEdgeWithCost(thisGraph, thisGraph->verticesCount-2, minSpot, INT_MAX, pgmZ);
 			}
 
 			// find the maximum pixel value clostest to the end
 			if (matrix[x][y] >= maxPixel) {
-				maxPixel = matrix[x][y];
 				maxSpot = pgmX * y + x;
+				addEdgeWithCost(thisGraph, maxSpot, thisGraph->verticesCount-1, INT_MAX, pgmZ);
 			}
 
 			//since the adjacency list is one dimensional and row-ordered, y*pgmX + x
@@ -146,32 +149,25 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 			//we'll start with the pixel to the left of this one
 			if (x > 0) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x-1][y]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x -1), cost, matrix[x-1][y]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x -1), cost, matrix[x][y]);
 			}
 			//onto the pixel to the right of this one
 			if (x < pgmX-1) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x+1][y]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x +1), cost, matrix[x+1][y]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), (y*pgmX +x +1), cost, matrix[x][y]);
 			}
 			//now the pixel below this one
 			if (y < pgmY-1) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x][y+1]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y+1)*pgmX +x), cost, matrix[x][y+1]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y+1)*pgmX +x), cost, matrix[x][y]);
 			}
 			//finally the pixel above this one
 			if (y > 0) {
 				cost = costCheck(pgmZ, matrix[x][y], matrix[x][y-1]);
-				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y-1)*pgmX +x), cost, matrix[x][y-1]);
+				addEdgeWithCost(thisGraph, (y*pgmX + x), ((y-1)*pgmX +x), cost, matrix[x][y]);
 			}
 		}
-		//add a link from the end pixel of the line to the sink
-		//addEdgeWithCost(thisGraph, (y*pgmX + pgmX-1), thisGraph->verticesCount-1, INT_MAX, pgmZ);
 	}
-	//printf("minSpot %d(%d), maxSpot %d(%d)\n", minSpot, minPixel, maxSpot, maxPixel);
-	// source
-	addEdgeWithCost(thisGraph, thisGraph->verticesCount-2, minSpot, INT_MAX, pgmZ);
-	// sink
-	addEdgeWithCost(thisGraph, maxSpot, thisGraph->verticesCount-1, INT_MAX, pgmZ);
 
 	return thisGraph;
 }
@@ -196,12 +192,10 @@ struct graph *readPgmFile(char *fileName) {
 					if ((pgmX == 0) && (pgmY == 0)) {
 						readTwoInts(line, &pgmX, &pgmY);
 						imageMatrix = make2dIntArray(pgmX, pgmY); 
-						//printf("Extents: %d,%d \n", pgmX, pgmY);
 
 					// get the greyscale depth
 					} else if (pgmZ == 0) {
 						readOneInt(line, &pgmZ);
-						//printf("Depth: %d \n", pgmZ);
 
 					// process image line
 					} else {
@@ -212,7 +206,6 @@ struct graph *readPgmFile(char *fileName) {
 				} else {
 					if ((line[0] == 'P') && (line[1] == '2')) {
 						validPgmFile = 1;
-						//printf("\n");
 					}
 				}
 			}
@@ -267,44 +260,52 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	int currentX = 0;
 	int currentY = 0;
 	struct node *currentNode = thisGraph->adjacencyList[source].head;
-	struct node *nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
+	struct node *nextNode = NULL;
 	struct isQueue * visitQueue = newISQueue();
-	// skip past source node
-	currentNode = nextNode;
-	nextNode = currentNode->next;
+	
 	int **newImageMatrix;
 	int *seen = (int *) malloc(sizeof(int) * thisGraph->verticesCount);
 	for (x=0; x < thisGraph->verticesCount; ++x) {
 		seen[x] = 0;
 	}
+	
 	// turn all pixels off
 	newImageMatrix = make2dIntArray(pgmX, pgmY);
 	for (y = 0; y < pgmY; ++y){
 		for (x = 0; x < pgmX; ++x){
-			newImageMatrix[x][y] = 0;
+			newImageMatrix[x][y] = pgmZ;
 		}
 	}
-	isEnqueue(visitQueue, currentNode);
-	seen[currentNode->vertex] = 1;
+
+	nextNode = currentNode;
+	while (nextNode != NULL) {
+		isEnqueue(visitQueue, nextNode);
+		seen[nextNode->vertex] = 1;
+		if(DBGIS) printf("Enqueueing vertex %d\n", nextNode->vertex);
+
+		nextNode = nextNode->next;
+	}
+
 	while ((currentNode = isDequeue(visitQueue)) != NULL) {
 		currentX = currentNode->vertex % pgmX;
 		currentY = currentNode->vertex / pgmX;
-		if(DBGIS) printf("At vertex %d, position %d,%d -> ", currentNode->vertex, currentX, currentY);
 		//is this a node that had capacity and now has none?
 		if (currentNode->capacity == 0) {
-			if(DBGIS) printf("No remaining capacity at this node\n");
+			//if(DBGIS) printf("No remaining capacity at this node\n");
 		} else {
 			//we are at a previously univisited node that isn't cut off here.
 			//we'll enqueue all nearby nodes and work on them next
-			if(DBGIS) printf("Capacity remains here, continuing\n");
-			newImageMatrix[currentX][currentY] = currentNode->zValue;
 			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
+
+			if (nextNode->capacity != 0) {
+				newImageMatrix[currentX][currentY] = currentNode->zValue;
+			}
+
 			while (nextNode != NULL) {
 				//is the node we're going to look at alrady visited?
-				if (seen[nextNode->vertex] == 0 && nextNode->flow != 0) {
+				if (seen[nextNode->vertex] == 0) {
 					isEnqueue(visitQueue, nextNode);
 					seen[nextNode->vertex] = 1;
-					if(DBGIS) printf("Enqueueing vertex %d\n", nextNode->vertex, currentX, currentY);
 				}
 				nextNode = nextNode->next;
 			}
@@ -314,12 +315,3 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 }
 
 #endif
-
-/*
-This needs to be commented for ff.c to compile correctly MEC 2/3/14
-int main(int argc, char *argv[]) {
-	readPgmFile(argv[1]);
-	printf("DONE \n");
-	return 0;
-}
-*/

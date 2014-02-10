@@ -1,4 +1,4 @@
-default: ff
+default: ford
 
 all: clean test analysis ff
 
