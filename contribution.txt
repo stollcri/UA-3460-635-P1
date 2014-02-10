@@ -1,0 +1,7 @@
+Contributions:
+
+Michael Crouse - Breadth-First Search, pgm input/output, image 
+segmentation (group effort), presentation, report (group effort),
+
+Chris Stoll - Ford-Fulkerson, image segmentation (group effort), 
+analysis, README files, report (group effort)
