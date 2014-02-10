@@ -12,9 +12,7 @@ For the purposes of this project the goal of image segmentation was to seperate 
 
 We started by implementing breadth first search. We decided to use C, so we had to create node and graph structures as well as functions for handling queues and stacks. Once the breadth first search was implemented we ran some analysis to verify that it was performing as expected. We expected that in the worst case breadth first search should run in (|E| + |V|) time. The chart below show the results of our emperical analysis for a number of various sized graphs. Each graph was run 25 times, outliers were excluded, then the times were averaged. The (|E| + |V|) values were scaled down so that the initial points roughly corespond; this is to make the asyptotes easier to compare. The time taken to run each graph does not form a smooth asymtote, this is due to differences in the graph desnisties. We used different densities to check a wider range of operating parameters.
 
-![Performance Graph A](./analysis/BreadthFirstSearch-small.png)
-
-![Performance Graph B](./analysis/BreadthFirstSearch-large.png)
+![Performance Graph A](./code/analysis/BreadthFirstSearch-small.png)
 
 | V | E | (E+V)/10 | (E+V)/100 | microseconds |
 |---|---|----------|-----------|--------------|
@@ -32,6 +30,11 @@ We started by implementing breadth first search. We decided to use C, so we had 
 | 1024 | 8192 | 368.64 | 92.16 | 43 |
 | 2048 | 8192 | 409.6 | 102.4 | 11 |
 | 2048 | 9999 | 481.88 | 120.47 | 151 |
+
+![Performance Graph B](./code/analysis/BreadthFirstSearch-large.png)
+
+| V | E | (E+V)/10 | (E+V)/100 | microseconds |
+|---|---|----------|-----------|--------------|
 | 10000 | 20000 | 1200 | 300 | 43 |
 | 10000 | 40000 | 2000 | 500 | 523 |
 | 25000 | 50000 | 3000 | 750 | 84 |
