@@ -143,7 +143,7 @@ struct graph * buildImageEdges(int pgmX, int pgmY, int pgmZ, int ** matrix) {
 				maxSpot = pgmX * y + x;
 				addEdgeWithCost(thisGraph, maxSpot, thisGraph->verticesCount-1, INT_MAX, pgmZ);
 			}
-
+			thisGraph->adjacencyList[y*pgmX +x].self->zValue = matrix[x][y];
 			//since the adjacency list is one dimensional and row-ordered, y*pgmX + x
 			//will give us the correct node
 			//we'll start with the pixel to the left of this one
@@ -273,6 +273,7 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 	newImageMatrix = make2dIntArray(pgmX, pgmY);
 	for (y = 0; y < pgmY; ++y){
 		for (x = 0; x < pgmX; ++x){
+			//newImageMatrix[x][y] = thisGraph->adjacencyList[y*pgmX +x].self->zValue;
 			newImageMatrix[x][y] = pgmZ;
 		}
 	}
@@ -296,11 +297,9 @@ void imageSegmentation(struct graph *thisGraph, char *cutFileName, int source) {
 			//we are at a previously univisited node that isn't cut off here.
 			//we'll enqueue all nearby nodes and work on them next
 			nextNode = thisGraph->adjacencyList[currentNode->vertex].head;
-
 			if (nextNode->capacity != 0) {
 				newImageMatrix[currentX][currentY] = currentNode->zValue;
-			}
-
+			} 
 			while (nextNode != NULL) {
 				//is the node we're going to look at alrady visited?
 				if (seen[nextNode->vertex] == 0) {
