@@ -119,7 +119,7 @@ int costCheck(int pgmZ, int source, int dest) {
 	} else {
 		result = pgmZ - (dest-source);
 	}
-	printf("%d\n", result);
+	if (DBGIS) printf("%d\n", result);
 	return result;
 }
 
